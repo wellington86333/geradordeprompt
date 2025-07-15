@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import {
   Select,
   SelectContent,
@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { useToast } from "@/hooks/use-toast";
-import { Copy, Mic, Share2, Star, Bot, Lightbulb, Target, Palette, Drama, MessageSquare, ShieldOff, CheckCircle } from 'lucide-react';
+import { Copy, Mic, Share2, Bot, Lightbulb, Target, Palette, Drama, MessageSquare, ShieldOff, CheckCircle, Download, RefreshCw, History, Bookmark } from 'lucide-react';
 
 const aiModels = [
   { value: 'claude', label: 'Claude 3' },
@@ -149,7 +149,16 @@ const PromptGenerator = () => {
                         <Copy className="h-5 w-5"/>
                     </Button>
                     <Button variant="ghost" size="icon" title="Salvar">
-                        <Star className="h-5 w-5" />
+                        <Bookmark className="h-5 w-5" />
+                    </Button>
+                     <Button variant="ghost" size="icon" title="Download">
+                        <Download className="h-5 w-5" />
+                    </Button>
+                    <Button variant="ghost" size="icon" title="Histórico">
+                        <History className="h-5 w-5" />
+                    </Button>
+                     <Button variant="ghost" size="icon" title="Limpar">
+                        <RefreshCw className="h-5 w-5" />
                     </Button>
                     <Button variant="ghost" size="icon" title="Compartilhar">
                         <Share2 className="h-5 w-5" />
@@ -165,5 +174,3 @@ const PromptGenerator = () => {
 };
 
 export default PromptGenerator;
-
-    
