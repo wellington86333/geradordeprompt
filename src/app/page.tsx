@@ -1,7 +1,10 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { Mic, MicOff } from 'lucide-react';
+import Header from '@/components/app/Header';
+import Footer from '@/components/app/Footer';
+import CTASection from '@/components/app/CTASection';
+import PromptGenerator from '@/components/app/PromptGenerator';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState('chatgpt');
@@ -144,33 +147,7 @@ export default function Home() {
   
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Header/Navigation */}
-      <header className="bg-white shadow-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center space-x-2">
-            <svg className="w-8 h-8 text-primary" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M2 17L12 22L22 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M2 12L12 17L22 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-            <h1 className="text-xl font-bold text-gray-800">Gerador de Prompt de IA</h1>
-          </div>
-          <nav className="hidden md:block">
-            <ul className="flex space-x-8">
-              <li><a href="#o-que-e" className="text-gray-600 hover:text-primary transition">O que é um Prompt de IA?</a></li>
-              <li><a href="#passos" className="text-gray-600 hover:text-primary transition">Passos</a></li>
-              <li><a href="#dicas" className="text-gray-600 hover:text-primary transition">Dicas</a></li>
-              <li><a href="#gratis-pago" className="text-gray-600 hover:text-primary transition">Grátis vs Pago</a></li>
-              <li><a href="#gerador" className="text-gray-600 hover:text-primary transition">Gerador de Prompt</a></li>
-            </ul>
-          </nav>
-          <button className="md:hidden text-gray-600 hover:text-primary">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
-            </svg>
-          </button>
-        </div>
-      </header>
+      <Header />
       
       {/* AI Prompt Generator Section */}
       <section id="gerador" className="py-16 bg-primary/5">
@@ -179,59 +156,20 @@ export default function Home() {
           <p className="text-center text-muted-foreground mt-2 mb-10">
             Inspirado e adaptado de <a href="https://chatgpt.com/g/g-686d94b362048191af9ce1fcc9f46b9e-veo3-fazedor-de-prompts" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">VEO3 - Fazedor de Prompts</a>.
           </p>
-          <div className="max-w-4xl mx-auto bg-card rounded-lg shadow-lg overflow-hidden">
-            <div className="p-6">
-              <div className="mb-6">
-                <p className="text-muted-foreground mb-4">Selecione um modelo de IA para gerar um prompt:</p>
-                <div className="flex flex-wrap gap-2">
-                  {Object.entries(aiModels).map(([key, model]) => (
-                    <button key={key} onClick={() => setActiveTab(key)} className={`px-4 py-2 rounded-full text-sm font-medium transition ${activeTab === key ? 'bg-primary text-primary-foreground' : 'bg-muted text-foreground hover:bg-muted/80'}`}>
-                      {model.name}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <div className="mb-6">
-                <label htmlFor="prompt-input" className="block text-foreground font-medium mb-2">Descreva o que você quer gerar:</label>
-                <div className="relative">
-                  <textarea id="prompt-input" rows={4} className="w-full px-4 py-3 pr-12 rounded-lg border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent" placeholder={`Descreva sua solicitação para ${aiModels[activeTab].name}...`} value={promptInput} onChange={(e) => setPromptInput(e.target.value)}></textarea>
-                  <button onClick={handleVoiceInput} className={`absolute right-3 top-3 p-1 rounded-full transition-colors ${isRecording ? 'bg-red-500/20 text-red-500' : 'text-muted-foreground hover:bg-muted'}`} title={isRecording ? 'Parar Gravação' : 'Gravar Prompt por Voz'}>
-                    {isRecording ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
-                  </button>
-                </div>
-              </div>
-              <div className="flex justify-between items-center">
-                <button onClick={() => setShowSyntaxGuide(!showSyntaxGuide)} className="px-4 py-2 bg-muted text-foreground rounded-md hover:bg-muted/80 transition">
-                  {showSyntaxGuide ? 'Ocultar Guia' : 'Mostrar Guia'}
-                </button>
-                <button onClick={generatePrompt} disabled={!promptInput.trim()} className="px-6 py-3 rounded-lg font-medium text-white transition bg-primary hover:bg-primary/90 disabled:bg-gray-400 disabled:cursor-not-allowed">
-                  Gerar Prompt
-                </button>
-              </div>
-
-              {showSyntaxGuide && (
-                <div className="mt-6 p-4 bg-primary/10 rounded-lg border border-primary/20">
-                  <h4 className="font-semibold text-primary/90 mb-2">Guia de Sintaxe para {aiModels[activeTab].name}:</h4>
-                  <p className="text-muted-foreground">{aiModels[activeTab].syntaxGuide}</p>
-                </div>
-              )}
-
-              {generatedPrompt && (
-                <div className="mt-6 p-4 bg-muted rounded-lg border border-border">
-                  <h4 className="font-semibold text-gray-800 mb-2">Seu Prompt Gerado:</h4>
-                  <div className="bg-background p-4 rounded border border-input min-h-[80px] mb-4 whitespace-pre-wrap">{generatedPrompt}</div>
-                  <div className="flex justify-end space-x-2">
-                    <button onClick={copyToClipboard} className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition">Copiar</button>
-                    <button onClick={generatePrompt} className="px-4 py-2 bg-primary/10 text-primary rounded hover:bg-primary/20 transition">Gerar Novamente</button>
-                  </div>
-                </div>
-              )}
-              <div className="mt-6 p-4 bg-primary/10 rounded-lg border border-primary/20">
-                <h4 className="font-semibold text-primary/90 mb-2">Exemplo de Prompt para {aiModels[activeTab].name}:</h4>
-                <p className="text-muted-foreground">{aiModels[activeTab].example}</p>
-              </div>
-            </div>
-          </div>
+          <PromptGenerator
+            aiModels={aiModels}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            promptInput={promptInput}
+            setPromptInput={setPromptInput}
+            generatedPrompt={generatedPrompt}
+            showSyntaxGuide={showSyntaxGuide}
+            setShowSyntaxGuide={setShowSyntaxGuide}
+            isRecording={isRecording}
+            handleVoiceInput={handleVoiceInput}
+            generatePrompt={generatePrompt}
+            copyToClipboard={copyToClipboard}
+          />
           <div className="mt-12 text-center">
             <p className="text-muted-foreground">Lembre-se, o sucesso do seu gerador de IA depende da qualidade da sua entrada. Dedique tempo para criar cada prompt com cuidado e teste-o minuciosamente.</p>
           </div>
@@ -239,20 +177,12 @@ export default function Home() {
       </section>
 
       {/* Hero Section */}
-      <section className="py-16 bg-gradient-to-r from-primary to-accent text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">Crie Prompts de IA Perfeitos com Maestria na Linguagem de IA</h2>
-          <p className="text-xl md:text-2xl max-w-3xl mx-auto mb-8">
-            Aprenda a linguagem única da IA enquanto gera prompts eficazes para ChatGPT, MidJourney, Stable Diffusion e outras ferramentas.
-          </p>
-          <a 
-            href="#gerador" 
-            className="inline-block bg-white text-primary px-8 py-3 rounded-lg font-medium text-lg shadow-lg hover:bg-gray-100 transition transform hover:-translate-y-1"
-          >
-            Comece a Gerar
-          </a>
-        </div>
-      </section>
+      <CTASection
+        title="Crie Prompts de IA Perfeitos com Maestria na Linguagem de IA"
+        description="Aprenda a linguagem única da IA enquanto gera prompts eficazes para ChatGPT, MidJourney, Stable Diffusion e outras ferramentas."
+        buttonText="Comece a Gerar"
+        link="#gerador"
+      />
 
       {/* Funny Image Section */}
       <section className="py-16 bg-background">
@@ -496,67 +426,14 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-r from-primary to-accent text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h3 className="text-3xl md:text-4xl font-bold mb-6">Comece a Criar Melhores Prompts de IA Hoje</h3>
-          <p className="text-xl max-w-3xl mx-auto mb-8">
-            Seja para criar texto, imagens ou outro conteúdo com IA, nosso gerador de prompts o ajudará a obter melhores resultados com menos esforço.
-          </p>
-          <a href="#gerador" className="inline-block bg-white text-primary px-8 py-3 rounded-lg font-medium text-lg shadow-lg hover:bg-gray-100 transition transform hover:-translate-y-1">
-            Experimente o Gerador de Prompts
-          </a>
-        </div>
-      </section>
+      <CTASection
+        title="Comece a Criar Melhores Prompts de IA Hoje"
+        description="Seja para criar texto, imagens ou outro conteúdo com IA, nosso gerador de prompts o ajudará a obter melhores resultados com menos esforço."
+        buttonText="Experimente o Gerador de Prompts"
+        link="#gerador"
+      />
 
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white py-12">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between">
-            <div className="mb-8 md:mb-0">
-              <div className="flex items-center space-x-2 mb-4">
-                <svg className="w-8 h-8 text-primary" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M2 17L12 22L22 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M2 12L12 17L22 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                <h2 className="text-xl font-bold">Gerador de Prompt de IA</h2>
-              </div>
-              <p className="text-gray-400 max-w-xs">
-                Crie prompts eficazes para geradores de IA com nossa ferramenta intuitiva de geração de prompts.
-              </p>
-            </div>
-            <div className="grid grid-cols-2 gap-8 md:grid-cols-3">
-              <div>
-                <h4 className="font-semibold text-lg mb-4">Produto</h4>
-                <ul className="space-y-2">
-                  <li><a href="#" className="text-gray-400 hover:text-white transition">Recursos</a></li>
-                  <li><a href="#" className="text-gray-400 hover:text-white transition">Preços</a></li>
-                  <li><a href="#" className="text-gray-400 hover:text-white transition">Documentação</a></li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-semibold text-lg mb-4">Recursos</h4>
-                <ul className="space-y-2">
-                  <li><a href="#" className="text-gray-400 hover:text-white transition">Blog</a></li>
-                  <li><a href="#" className="text-gray-400 hover:text-white transition">Tutoriais</a></li>
-                  <li><a href="#" className="text-gray-400 hover:text-white transition">Suporte</a></li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-semibold text-lg mb-4">Empresa</h4>
-                <ul className="space-y-2">
-                  <li><a href="#" className="text-gray-400 hover:text-white transition">Sobre</a></li>
-                  <li><a href="#" className="text-gray-400 hover:text-white transition">Contato</a></li>
-                  <li><a href="#" className="text-gray-400 hover:text-white transition">Privacidade</a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div className="border-t border-gray-700 mt-12 pt-8 text-center text-gray-400">
-            <p>&copy; {new Date().getFullYear()} Gerador de Prompt de IA. Todos os direitos reservados.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
