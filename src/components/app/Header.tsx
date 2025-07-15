@@ -1,17 +1,15 @@
 'use client';
-import type React from 'react';
+import React from 'react';
 
 const Header = () => {
   return (
-    <header className="text-center mb-10 animate-fadeInDown">
-      <h1 className="font-montserrat text-6xl font-black mb-2 tracking-wider animated-gradient-text text-shadow-[0_5px_15px_hsl(var(--primary-hsl),0.3)]">
-        LOVART
+    <header className="text-center my-8 md:my-12">
+      <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-4 gradient-text">
+        Gerador de Prompts para IA
       </h1>
-      <p className="text-xl max-w-3xl mx-auto mb-5 text-muted-foreground font-light">
-        O primeiro agente de design com IA que transforma suas ideias em realidade
-      </p>
-      <p className="text-base text-accent max-w-2xl mx-auto leading-relaxed font-medium">
-        Crie designs profissionais em segundos, sem necessidade de habilidades técnicas. Logos, banners, interfaces e muito mais!
+      <p className="max-w-3xl mx-auto text-lg md:text-xl text-muted-foreground">
+        Crie prompts perfeitos para modelos como Claude, Perplexity, Gemini e VO3 Google.
+        Refine sua ideia e obtenha resultados incríveis em texto, código ou vídeo.
       </p>
     </header>
   );

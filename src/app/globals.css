@@ -5,51 +5,78 @@
 
 @layer base {
   :root {
-    --background-start-rgb: 18, 18, 18;
-    --background-end-rgb: 18, 18, 18;
-    
-    --primary: 138 35 135;
-    --secondary: 233 64 87;
-    --accent: 242 113 33;
-    
-    --foreground-rgb: 255, 255, 255;
-    --muted-foreground-rgb: 204, 204, 204;
-    
-    --dark: 18 18 18;
-    --light: 255 255 255;
-    
-    --radius: 1rem;
-    
-    /* Converted ShadCN Variables */
-    --background: 0 0% 7.1%; /* approx. #121212 */
-    --foreground: 0 0% 100%; /* #ffffff */
-    --card: 0 0% 100% / 0.05;
-    --card-foreground: 0 0% 100%;
-    --popover: 0 0% 7.1%;
-    --popover-foreground: 0 0% 100%;
-    
-    --primary-hsl: 301 62% 34%; /* #8A2387 */
-    --primary-foreground-hsl: 0 0% 100%;
-    
-    --secondary-hsl: 353 79% 58%; /* #E94057 */
-    --secondary-foreground-hsl: 0 0% 100%;
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --radius: 0.5rem;
 
-    --muted: 0 0% 100% / 0.05;
-    --muted-foreground:  0 0% 80%; /* #cccccc */
-
-    --accent-hsl: 23 90% 54%; /* #F27121 */
-    --accent-foreground-hsl: 0 0% 100%;
-    
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 100%;
-    
-    --border: 301 62% 34% / 0.3; /* primary with alpha */
-    --input: 0 0% 100% / 0.05;
-    --ring: 23 90% 54%;
+    /* Lovart Section Colors */
+    --lovart-primary: #8A2387;
+    --lovart-secondary: #E94057;
+    --lovart-accent: #F27121;
+    --lovart-dark: #121212;
+    --lovart-light: #ffffff;
+    --lovart-gradient: linear-gradient(135deg, var(--lovart-primary), var(--lovart-secondary), var(--lovart-accent));
   }
 
   .dark {
-     /* Using root variables directly as the design is dark-only */
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+
+  .light {
+    --background: 0 0% 100%;
+    --foreground: 222.2 47.4% 11.2%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 220 13% 91%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 220 13% 91%;
+    --muted-foreground: 220 9% 46%;
+    --accent: 220 13% 91%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 222.2 47.4% 11.2%;
   }
 }
 
@@ -62,57 +89,287 @@
   }
 }
 
-@layer components {
-  .section-title {
-    @apply text-3xl md:text-4xl font-bold mb-6 relative pb-3;
-  }
-  .section-title::after {
-    content: '';
-    @apply absolute bottom-0 left-0 w-20 h-1 rounded-full;
-    background: linear-gradient(135deg, hsl(var(--primary-hsl)), hsl(var(--secondary-hsl)), hsl(var(--accent-hsl)));
-  }
+.gradient-text {
+  background: linear-gradient(to right, #3b82f6, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
 
-  .animated-gradient-text {
-    @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, hsl(var(--primary-hsl)), hsl(var(--secondary-hsl)), hsl(var(--accent-hsl)));
-  }
+.animated-gradient-bg {
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899, #f59e0b);
+    background-size: 300% 300%;
+    animation: gradient-animation 10s ease infinite;
+}
 
-  .animated-gradient-bg {
-    background: linear-gradient(135deg, hsl(var(--primary-hsl)), hsl(var(--secondary-hsl)), hsl(var(--accent-hsl)));
-    background-size: 200% auto;
-    transition: background-position 0.5s ease-in-out;
+@keyframes gradient-animation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(139, 92, 246, 0.2), 0 0 10px rgba(139, 92, 246, 0.2);
   }
-  .animated-gradient-bg:hover {
-    background-position: right center;
+  50% {
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.5), 0 0 30px rgba(139, 92, 246, 0.5);
   }
 }
 
-@keyframes fadeInDown {
+/* Lovart Section Styles */
+.lovart-section {
+  font-family: 'Poppins', sans-serif;
+  background: var(--lovart-dark);
+  color: var(--lovart-light);
+  background: linear-gradient(rgba(18, 18, 18, 0.9), rgba(18, 18, 18, 0.9)),
+              url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23121212"/><path d="M0 50 Q25 30, 50 50 T100 50" stroke="%238A2387" stroke-width="0.5" fill="none"/></svg>');
+  padding: 20px;
+  border-radius: 1.5rem;
+  margin-top: 4rem;
+  margin-bottom: 2rem;
+}
+.lovart-header {
+  text-align: center;
+  margin-bottom: 40px;
+  animation: lovart-fadeInDown 1s ease;
+}
+.lovart-logo {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 4rem;
+  font-weight: 900;
+  background: var(--lovart-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+  text-shadow: 0 5px 15px rgba(138, 35, 135, 0.3);
+}
+.lovart-tagline {
+  font-size: 1.4rem;
+  max-width: 700px;
+  margin: 0 auto 20px;
+  color: #ccc;
+  font-weight: 300;
+}
+.lovart-subtitle {
+  font-size: 1.1rem;
+  color: var(--lovart-accent);
+  font-weight: 500;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+.lovart-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-bottom: 40px;
+}
+.lovart-features-section, .lovart-codes-section {
+  flex: 1;
+  min-width: 300px;
+}
+.lovart-section-title {
+  font-size: 2rem;
+  margin-bottom: 25px;
+  position: relative;
+  padding-bottom: 10px;
+  font-weight: 700;
+}
+.lovart-section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 80px;
+  height: 4px;
+  background: var(--lovart-gradient);
+  border-radius: 2px;
+}
+.lovart-features-list {
+  list-style: none;
+  padding: 0;
+}
+.lovart-feature-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+.lovart-feature-item:hover {
+  transform: translateY(-5px);
+  background: rgba(138, 35, 135, 0.15);
+}
+.lovart-feature-icon {
+  font-size: 1.8rem;
+  margin-right: 15px;
+  min-width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--lovart-primary), var(--lovart-secondary));
+  border-radius: 50%;
+}
+.lovart-feature-content h3 {
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.lovart-feature-content p {
+  color: #bbb;
+  line-height: 1.6;
+}
+.lovart-codes-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+.lovart-code-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 25px;
+  text-align: center;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(138, 35, 135, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+.lovart-code-card:hover {
+  transform: translateY(-8px);
+  background: rgba(138, 35, 135, 0.1);
+  box-shadow: 0 10px 25px rgba(138, 35, 135, 0.2);
+  border-color: var(--lovart-primary);
+}
+.lovart-code-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--lovart-gradient);
+}
+.lovart-code-label {
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  color: #ccc;
+}
+.lovart-referral-code {
+  font-size: 1.8rem;
+  font-weight: 700;
+  background: linear-gradient(45deg, var(--lovart-accent), var(--lovart-secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  padding: 10px;
+  margin: 15px 0;
+  border-radius: 8px;
+  letter-spacing: 2px;
+  font-family: 'Courier New', monospace;
+  display: block;
+  animation: lovart-pulse 2s infinite;
+}
+.lovart-code-desc {
+  color: #bbb;
+  margin-bottom: 20px;
+  font-size: 0.95rem;
+}
+.lovart-cta-section {
+  text-align: center;
+  padding: 40px;
+  background: linear-gradient(135deg, rgba(138, 35, 135, 0.2), rgba(233, 64, 87, 0.2));
+  border-radius: 20px;
+  margin: 40px 0;
+  border: 1px solid rgba(138, 35, 135, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+.lovart-cta-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(242, 113, 33, 0.1) 0%, transparent 70%);
+  z-index: 0;
+  animation: lovart-rotate 20s linear infinite;
+}
+.lovart-cta-title {
+  font-size: 2.2rem;
+  margin-bottom: 20px;
+  font-weight: 700;
+  position: relative;
+  z-index: 1;
+}
+.lovart-cta-subtitle {
+  max-width: 600px;
+  margin: 0 auto 30px;
+  color: #ccc;
+  font-size: 1.1rem;
+   position: relative;
+  z-index: 1;
+}
+.lovart-cta-button {
+  display: inline-flex;
+  align-items: center;
+  background: var(--lovart-gradient);
+  color: white;
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 16px 45px;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 20px rgba(233, 64, 87, 0.4);
+  position: relative;
+  overflow: hidden;
+   z-index: 1;
+}
+.lovart-cta-button:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(233, 64, 87, 0.6);
+}
+.lovart-cta-button i {
+  margin-right: 10px;
+}
+.lovart-counter {
+  display: inline-block;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 8px 20px;
+  border-radius: 30px;
+  margin-top: 20px;
+  font-weight: 500;
+  border: 1px solid var(--lovart-accent);
+  animation: lovart-pulse 2s infinite;
+   z-index: 1;
+   position: relative;
+}
+
+/* Lovart Animations */
+@keyframes lovart-fadeInDown {
   from {
-      opacity: 0;
-      transform: translateY(-30px);
+    opacity: 0;
+    transform: translateY(-30px);
   }
   to {
-      opacity: 1;
-      transform: translateY(0);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
-
-@keyframes pulse {
-    0% { transform: scale(1); box-shadow: 0 0 0 0 hsl(var(--accent-hsl), 0.7); }
-    50% { transform: scale(1.02); box-shadow: 0 0 10px 5px hsl(var(--accent-hsl), 0); }
-    100% { transform: scale(1); box-shadow: 0 0 0 0 hsl(var(--accent-hsl), 0); }
+@keyframes lovart-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
 }
-
-@keyframes rotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-.animate-fadeInDown {
-  animation: fadeInDown 1s ease;
-}
-
-.animate-pulse-custom {
-  animation: pulse 2s infinite;
+@keyframes lovart-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
