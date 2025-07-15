@@ -55,7 +55,7 @@ const PromptGenerator = () => {
         });
         return;
     }
-    const finalPrompt = `**Modelo de IA:** ${aiModels.find(m => m.value === model)?.label}\n\n**Instruções do Prompt:**\n${promptInput}`;
+    const finalPrompt = `**AI Model:** ${aiModels.find(m => m.value === model)?.label}\n\n**Prompt Instructions:**\n${promptInput}`;
     setGeneratedPrompt(finalPrompt);
   };
   
