@@ -1,3 +1,4 @@
+
 'use client';
 import React from 'react';
 import { Button } from '@/components/ui/button';
@@ -7,7 +8,7 @@ import { Store, Users, DollarSign, ExternalLink } from 'lucide-react';
 const EcommerceIncubatorSection = () => {
   return (
     <section className="my-24">
-      <Card className="w-full max-w-5xl mx-auto overflow-hidden bg-gradient-to-br from-cyan-900 via-blue-900 to-black border-cyan-800/50 shadow-2xl shadow-cyan-500/10">
+      <Card className="w-full mx-auto overflow-hidden bg-gradient-to-br from-cyan-900 via-blue-900 to-black border-cyan-800/50 shadow-2xl shadow-cyan-500/10">
         <CardHeader className="text-center p-8">
           <div className="mx-auto mb-4">
              <Store className="h-16 w-16 text-cyan-400" />

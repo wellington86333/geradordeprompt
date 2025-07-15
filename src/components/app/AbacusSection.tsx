@@ -1,3 +1,4 @@
+
 'use client';
 import React from 'react';
 import { Button } from '@/components/ui/button';
@@ -7,7 +8,7 @@ import { Rocket, CheckCircle2 } from 'lucide-react';
 const AbacusSection = () => {
   return (
     <section className="my-24">
-      <Card className="w-full max-w-5xl mx-auto overflow-hidden bg-gradient-to-br from-blue-900 via-purple-900 to-black border-purple-800/50 shadow-2xl shadow-purple-500/10">
+      <Card className="w-full mx-auto overflow-hidden bg-gradient-to-br from-blue-900 via-purple-900 to-black border-purple-800/50 shadow-2xl shadow-purple-500/10">
         <CardHeader className="text-center p-8">
           <div className="text-4xl mb-4">🌟</div>
           <CardTitle className="text-3xl font-bold text-white tracking-tight">

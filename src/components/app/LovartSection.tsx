@@ -5,7 +5,7 @@ import { Bolt, Wand2, Palette, RefreshCw, Unlock, Star, LockOpen, Clock } from '
 
 const LovartSection = () => {
     return (
-        <section className="lovart-section my-24 mx-auto max-w-5xl">
+        <section className="lovart-section my-24 mx-auto">
             <div className="container mx-auto">
                 <header className="lovart-header">
                     <h1 className="lovart-logo">LOVART</h1>
