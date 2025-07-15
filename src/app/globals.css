@@ -119,6 +119,16 @@
   }
 }
 
+@keyframes subtle-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+
 /* Lovart Section Styles */
 .lovart-section {
   font-family: 'Poppins', sans-serif;
