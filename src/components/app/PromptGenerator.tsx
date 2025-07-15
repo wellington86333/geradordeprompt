@@ -143,7 +143,7 @@ const PromptGenerator: React.FC = () => {
           <button onClick={() => setShowSyntaxGuide(!showSyntaxGuide)} className="px-4 py-2 bg-muted text-foreground rounded-md hover:bg-muted/80 transition transform hover:-translate-y-0.5">
             {showSyntaxGuide ? 'Ocultar Guia' : 'Mostrar Guia'}
           </button>
-          <button onClick={generatePrompt} disabled={!promptInput.trim()} className="px-8 py-3 rounded-lg font-medium text-white transition bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed flex items-center gap-2 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+          <button onClick={generatePrompt} disabled={!promptInput.trim()} className="px-8 py-3 rounded-lg font-medium text-white transition disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed flex items-center gap-2 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 animated-gradient">
             <Send className="w-4 h-4" />
             Gerar Prompt
           </button>

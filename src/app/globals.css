@@ -62,3 +62,14 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .animated-gradient {
+    background-size: 200% auto;
+    background-image: linear-gradient(to right, hsl(var(--primary)) 0%, hsl(var(--accent)) 50%, hsl(var(--primary)) 100%);
+    transition: background-position 0.5s ease-in-out;
+  }
+  .animated-gradient:hover {
+    background-position: right center;
+  }
+}
