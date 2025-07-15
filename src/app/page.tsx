@@ -1,12 +1,58 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import { Mic, MicOff } from 'lucide-react';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState('chatgpt');
   const [generatedPrompt, setGeneratedPrompt] = useState('');
   const [promptInput, setPromptInput] = useState('');
   const [showSyntaxGuide, setShowSyntaxGuide] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+  const recognitionRef = useRef<any>(null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (SpeechRecognition) {
+        const recognition = new SpeechRecognition();
+        recognition.continuous = false;
+        recognition.lang = 'pt-BR';
+        recognition.interimResults = false;
+
+        recognition.onresult = (event) => {
+          const transcript = event.results[0][0].transcript;
+          setPromptInput(transcript);
+          setIsRecording(false);
+        };
+
+        recognition.onerror = (event) => {
+          console.error('Speech recognition error', event.error);
+          setIsRecording(false);
+        };
+        
+        recognition.onend = () => {
+          setIsRecording(false);
+        };
+
+        recognitionRef.current = recognition;
+      }
+    }
+  }, []);
+
+  const handleVoiceInput = () => {
+    if (recognitionRef.current) {
+      if (isRecording) {
+        recognitionRef.current.stop();
+        setIsRecording(false);
+      } else {
+        recognitionRef.current.start();
+        setIsRecording(true);
+      }
+    } else {
+      alert('A reconhecimento de voz não é suportada neste navegador.');
+    }
+  };
   
   const aiModels: Record<string, {name: string, description: string, example: string, syntaxGuide: string}> = {
     chatgpt: {
@@ -147,7 +193,12 @@ export default function Home() {
               </div>
               <div className="mb-6">
                 <label htmlFor="prompt-input" className="block text-foreground font-medium mb-2">Descreva o que você quer gerar:</label>
-                <textarea id="prompt-input" rows={4} className="w-full px-4 py-3 rounded-lg border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent" placeholder={`Descreva sua solicitação para ${aiModels[activeTab].name}...`} value={promptInput} onChange={(e) => setPromptInput(e.target.value)}></textarea>
+                <div className="relative">
+                  <textarea id="prompt-input" rows={4} className="w-full px-4 py-3 pr-12 rounded-lg border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent" placeholder={`Descreva sua solicitação para ${aiModels[activeTab].name}...`} value={promptInput} onChange={(e) => setPromptInput(e.target.value)}></textarea>
+                  <button onClick={handleVoiceInput} className={`absolute right-3 top-3 p-1 rounded-full transition-colors ${isRecording ? 'bg-red-500/20 text-red-500' : 'text-muted-foreground hover:bg-muted'}`} title={isRecording ? 'Parar Gravação' : 'Gravar Prompt por Voz'}>
+                    {isRecording ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+                  </button>
+                </div>
               </div>
               <div className="flex justify-between items-center">
                 <button onClick={() => setShowSyntaxGuide(!showSyntaxGuide)} className="px-4 py-2 bg-muted text-foreground rounded-md hover:bg-muted/80 transition">
