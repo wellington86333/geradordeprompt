@@ -16,14 +16,14 @@ const FeatureItem: React.FC<{ feature: Feature }> = ({ feature }) => (
 
 const FeaturesSection = () => {
   return (
-    <div className="flex-1 min-w-[300px]">
+    <section className="my-10">
       <h2 className="section-title">Por que escolher o Lovart?</h2>
-      <ul className="list-none">
+      <ul className="list-none p-0">
         {features.map((feature, index) => (
           <FeatureItem key={index} feature={feature} />
         ))}
       </ul>
-    </div>
+    </section>
   );
 };
 

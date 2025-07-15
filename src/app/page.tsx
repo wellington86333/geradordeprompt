@@ -12,16 +12,14 @@ export default function Home() {
       <div className="container max-w-6xl mx-auto">
         <Header />
         <main>
-          <div className="flex flex-wrap gap-8 mb-10">
-            <FeaturesSection />
-            <CodesSection />
-          </div>
+          <FeaturesSection />
           <CTASection
             title="Comece a criar designs incríveis hoje mesmo!"
             description="Junte-se à revolução do design com IA. Cadastre-se agora e use qualquer um dos nossos códigos exclusivos para desbloquear acesso VIP."
             buttonText="ACESSAR PLATAFORMA"
             link="https://www.lovart.ai"
           />
+          <CodesSection />
         </main>
         <Footer />
       </div>
