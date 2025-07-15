@@ -5,8 +5,6 @@ import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Zap, Upload } from 'lucide-react';
-import { personalizeHeadlineAction } from '@/lib/actions';
-
 
 const FunnyCatSection = () => {
     const [imageSrc, setImageSrc] = useState("https://storage.googleapis.com/fweb-shared-prod.appspot.com/HXAPgCgI2mgE/2f854a85-f215-419b-a48a-1bc2d2d88f0d.jpg");
@@ -71,5 +69,3 @@ const FunnyCatSection = () => {
 }
 
 export default FunnyCatSection;
-
-  
