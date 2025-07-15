@@ -23,38 +23,30 @@ const aiModels = [
 ];
 
 const PromptGenerator = () => {
-  const [formData, setFormData] = useState({
-    model: 'vo3_google',
-    objective: '',
-    style: '',
-    tone: '',
-    context: '',
-    negative: '',
-  });
+  const [model, setModel] = useState('vo3_google');
+  const [promptInput, setPromptInput] = useState('');
   const [generatedPrompt, setGeneratedPrompt] = useState('');
   const { toast } = useToast();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const { id, value } = e.target;
-    setFormData((prev) => ({ ...prev, [id]: value }));
+    setPromptInput(e.target.value);
   };
 
   const handleSelectChange = (value: string) => {
-    setFormData((prev) => ({ ...prev, model: value }));
+    setModel(value);
   };
 
   const generatePrompt = () => {
-    const { objective, style, tone, context, negative } = formData;
-    if (!objective) {
+    if (!promptInput) {
         toast({
             title: "Campo Obrigatório",
-            description: "Por favor, preencha o campo 'Objetivo' para gerar um prompt.",
+            description: "Por favor, preencha a descrição do seu prompt.",
             variant: "destructive",
         });
         return;
     }
-    const prompt = `**Objetivo:** ${objective}\n**Estilo:** ${style || 'Não especificado'}\n**Tom:** ${tone || 'Não especificado'}\n**Contexto:** ${context || 'Não especificado'}\n**Não incluir:** ${negative || 'Nenhum'}`;
-    setGeneratedPrompt(prompt);
+    const finalPrompt = `**Modelo de IA:** ${aiModels.find(m => m.value === model)?.label}\n**Prompt:**\n${promptInput}`;
+    setGeneratedPrompt(finalPrompt);
   };
   
   const copyToClipboard = () => {
@@ -73,50 +65,36 @@ const PromptGenerator = () => {
       <CardHeader className="text-center">
         <CardTitle className="text-3xl font-bold">Gerador de Prompt</CardTitle>
         <CardDescription className="text-muted-foreground">
-          Selecione um modelo de IA e preencha os campos para criar seu prompt.
+          Selecione um modelo de IA e descreva o que você precisa para criar seu prompt.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-8">
         <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div className="md:col-span-1">
                   <Label htmlFor="model" className="text-lg font-semibold mb-2 block">Modelo de IA</Label>
-                  <Select value={formData.model} onValueChange={handleSelectChange}>
+                  <Select value={model} onValueChange={handleSelectChange}>
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Selecione um modelo..." />
+                      <SelectValue placeholder="Selecione..." />
                     </SelectTrigger>
                     <SelectContent>
-                      {aiModels.map((model) => (
-                        <SelectItem key={model.value} value={model.value}>
-                          {model.label}
+                      {aiModels.map((m) => (
+                        <SelectItem key={m.value} value={m.value}>
+                          {m.label}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
-                 <div>
-                  <Label htmlFor="objective" className="text-lg font-semibold mb-2 block">Objetivo</Label>
-                  <Textarea id="objective" placeholder="Ex: Criar uma legenda para um post sobre IA" value={formData.objective} onChange={handleInputChange} />
-                </div>
-            </div>
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <Label htmlFor="style" className="text-lg font-semibold mb-2 block">Estilo</Label>
-                  <Textarea id="style" placeholder="Ex: Formal, casual, técnico, poético" value={formData.style} onChange={handleInputChange} />
-                </div>
-                <div>
-                  <Label htmlFor="tone" className="text-lg font-semibold mb-2 block">Tom</Label>
-                  <Textarea id="tone" placeholder="Ex: Inspirador, divertido, sério" value={formData.tone} onChange={handleInputChange} />
-                </div>
-            </div>
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                 <div>
-                  <Label htmlFor="context" className="text-lg font-semibold mb-2 block">Contexto</Label>
-                  <Textarea id="context" placeholder="Ex: Público-alvo, informações relevantes" value={formData.context} onChange={handleInputChange} />
-                </div>
-                 <div>
-                  <Label htmlFor="negative" className="text-lg font-semibold mb-2 block">O que evitar?</Label>
-                  <Textarea id="negative" placeholder="Ex: Jargões técnicos, linguagem negativa" value={formData.negative} onChange={handleInputChange} />
+                 <div className="md:col-span-3">
+                  <Label htmlFor="promptInput" className="text-lg font-semibold mb-2 block">Descreva seu Prompt</Label>
+                  <Textarea 
+                    id="promptInput" 
+                    placeholder="Ex: Crie uma legenda para um post sobre IA com estilo formal, tom divertido, para um podcast de gatos..." 
+                    value={promptInput} 
+                    onChange={handleInputChange}
+                    className="min-h-[120px]"
+                   />
                 </div>
             </div>
         </div>
