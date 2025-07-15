@@ -5,6 +5,8 @@ import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Zap, Upload } from 'lucide-react';
+import { personalizeHeadlineAction } from '@/lib/actions';
+
 
 const FunnyCatSection = () => {
     const [imageSrc, setImageSrc] = useState("https://storage.googleapis.com/aifire.co/images/B9p6S73uB8K8g6a4c2a4.jpeg");
