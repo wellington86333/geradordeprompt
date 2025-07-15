@@ -1,3 +1,4 @@
+
 'use client';
 import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,7 +7,7 @@ import {Zap} from 'lucide-react';
 const FunnyCatSection = () => {
     return (
         <section className="my-16">
-            <Card className="w-full max-w-4xl mx-auto overflow-hidden shadow-lg border-border/40 animated-gradient-bg p-1 rounded-2xl">
+            <Card className="w-full max-w-4xl mx-auto overflow-hidden shadow-lg border-border/40 p-1 rounded-2xl animate-[pulse-glow_4s_ease-in-out_infinite]">
                 <div className="bg-background rounded-xl">
                     <CardHeader className="items-center text-center">
                         <Zap className="h-10 w-10 text-yellow-400 mb-2"/>
@@ -32,3 +33,5 @@ const FunnyCatSection = () => {
 }
 
 export default FunnyCatSection;
+
+    

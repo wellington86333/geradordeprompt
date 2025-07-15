@@ -90,11 +90,12 @@
 }
 
 .gradient-text {
-  background: linear-gradient(to right, #3b82f6, #8b5cf6);
+  background: linear-gradient(to right, #3b82f6, #8b5cf6, #ec4899);
+  background-size: 200% 200%;
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-fill-color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-animation 4s ease infinite;
 }
 
 .animated-gradient-bg {
@@ -373,3 +374,5 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+    

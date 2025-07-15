@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState } from 'react';
@@ -69,7 +70,7 @@ const PromptGenerator = () => {
   };
 
   return (
-    <Card className="w-full max-w-4xl mx-auto shadow-lg border-border/40 animated-gradient-bg p-1 rounded-2xl">
+    <Card className="w-full max-w-4xl mx-auto shadow-lg border-border/40 p-1 rounded-2xl animate-[pulse-glow_4s_ease-in-out_infinite]">
         <div className="bg-background rounded-xl">
       <CardHeader className="text-center">
         <CardTitle className="text-3xl font-bold">Gerador de Prompt</CardTitle>
@@ -164,3 +165,5 @@ const PromptGenerator = () => {
 };
 
 export default PromptGenerator;
+
+    
