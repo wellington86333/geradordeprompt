@@ -13,7 +13,7 @@ import ContactSection from '@/components/app/ContactSection';
 
 export default function Home() {
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState('chatgpt');
+  const [activeTab, setActiveTab] = useState('veo');
   const [generatedPrompt, setGeneratedPrompt] = useState('');
   const [promptInput, setPromptInput] = useState('');
   const [showSyntaxGuide, setShowSyntaxGuide] = useState(false);
@@ -68,6 +68,12 @@ export default function Home() {
   };
   
   const aiModels: Record<string, {name: string, description: string, example: string, syntaxGuide: string}> = {
+    veo: {
+        name: 'VEO',
+        description: 'Modelo de IA do Google para geração de vídeo de alta qualidade a partir de texto.',
+        example: 'Um drone sobrevoando uma praia tropical com águas cristalinas e palmeiras ao pôr do sol, cinematográfico, 1080p.',
+        syntaxGuide: 'Descreva a cena com detalhes visuais, especificando o tipo de filmagem (ex: "tomada de drone", "câmera lenta"), estilo (ex: "cinematográfico"), e qualidades técnicas (ex: "altamente detalhado", "1080p").'
+    },
     chatgpt: {
       name: 'ChatGPT',
       description: 'O poderoso modelo de linguagem da OpenAI para geração de texto',
@@ -113,6 +119,13 @@ export default function Home() {
   };
   
   const promptTemplates: Record<string, string[]> = {
+    veo: [
+        'Tomada cinematográfica de [assunto] em [local], [iluminação], [hora do dia].',
+        'Um vídeo em lapso de tempo de [evento] mostrando [detalhes].',
+        'Visão de drone sobrevoando [paisagem] com [elementos].',
+        'Cena em câmera lenta de [ação], estilo [estilo visual].',
+        'Um vídeo realista de [animal] em seu habitat natural, [detalhes do ambiente].'
+    ],
     chatgpt: [
       'Explique [tópico] para [público] usando [analogia]',
       'Escreva um(a) [tipo] sobre [assunto] com [tom]',
@@ -510,3 +523,5 @@ export default function Home() {
     </div>
   );
 }
+
+    
