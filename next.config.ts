@@ -36,6 +36,7 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
     ],
+    unoptimized: true, // Necessário para exibir Data URLs e blobs
   },
 };
 
