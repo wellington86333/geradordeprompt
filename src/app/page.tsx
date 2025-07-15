@@ -4,6 +4,7 @@ import Header from '@/components/app/Header';
 import Footer from '@/components/app/Footer';
 import PromptGenerator from '@/components/app/PromptGenerator';
 import LovartSection from '@/components/app/LovartSection';
+import AbacusSection from '@/components/app/AbacusSection';
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
         <Header />
         <PromptGenerator />
         <LovartSection />
+        <AbacusSection />
       </main>
       <Footer />
     </div>
