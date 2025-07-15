@@ -80,6 +80,18 @@ export default function Home() {
       example: 'Explique o conceito de computação quântica como se eu tivesse cinco anos, focando na segurança.',
       syntaxGuide: 'Ideal para diálogos. Forneça personas (ex: "Aja como..."). Use XML para estruturar tarefas complexas.'
     },
+    gemini: {
+        name: 'Gemini',
+        description: 'Modelo de IA multimodal do Google com acesso a informações em tempo real.',
+        example: 'Planeje uma viagem de 3 dias para o Rio de Janeiro, incluindo voos e hotéis, e mostre os resultados em uma tabela.',
+        syntaxGuide: 'Faça perguntas diretas. Pode solicitar informações da web e formatos de saída específicos como tabelas ou JSON.'
+    },
+    perplexity: {
+        name: 'Perplexity',
+        description: 'Motor de busca conversacional que cita fontes para suas respostas.',
+        example: 'Quais são os avanços mais recentes na tecnologia de baterias? Inclua fontes acadêmicas.',
+        syntaxGuide: 'Formule perguntas como se estivesse pesquisando. Peça fontes para verificar a informação.'
+    },
     midjourney: {
       name: 'MidJourney',
       description: 'Gerador de arte de IA com personalização avançada de estilo',
@@ -114,6 +126,20 @@ export default function Home() {
       'Resuma o seguinte texto sobre [assunto] e liste os pontos principais.',
       'Forneça uma análise de sentimento sobre a seguinte frase: [frase].',
       'Escreva um e-mail [formal/informal] para [destinatário] sobre [assunto].'
+    ],
+    gemini: [
+      'Crie um roteiro de [duração] para um vídeo do YouTube sobre [tópico].',
+      'Liste os prós e contras de [tecnologia] em formato de tabela.',
+      'Encontre e resuma as últimas notícias sobre [empresa ou indústria].',
+      'Gere uma lista de ideias para posts de blog sobre [nicho de mercado].',
+      'Traduza a seguinte frase para [idioma]: "[frase]".'
+    ],
+    perplexity: [
+      'Quais são as principais pesquisas sobre [tópico científico]? Forneça links para os artigos.',
+      'Compare [produto A] e [produto B] com base em análises de usuários e especificações técnicas.',
+      'Explique [evento histórico] com uma linha do tempo e fontes confiáveis.',
+      'Encontre um tutorial passo a passo para [tarefa técnica].',
+      'Resuma os argumentos a favor e contra [tópico controverso], citando as fontes.'
     ],
     midjourney: [
       '[Descrição da cena], [estilo], --v 5 --ar [proporção]',
@@ -484,5 +510,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
