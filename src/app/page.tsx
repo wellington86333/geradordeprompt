@@ -129,7 +129,10 @@ export default function Home() {
       {/* AI Prompt Generator Section */}
       <section id="gerador" className="py-16 bg-primary/5">
         <div className="container mx-auto px-4">
-          <h3 className="text-3xl font-bold text-center mb-12 text-gray-800">Gerador de Prompt de IA</h3>
+          <h3 className="text-3xl font-bold text-center text-gray-800">Gerador de Prompt de IA</h3>
+          <p className="text-center text-muted-foreground mt-2 mb-10">
+            Inspirado e adaptado de <a href="https://chatgpt.com/g/g-686d94b362048191af9ce1fcc9f46b9e-veo3-fazedor-de-prompts" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">VEO3 - Fazedor de Prompts</a>.
+          </p>
           <div className="max-w-4xl mx-auto bg-card rounded-lg shadow-lg overflow-hidden">
             <div className="p-6">
               <div className="mb-6">
@@ -479,3 +482,5 @@ export default function Home() {
     </div>
   );
 }
+
+    
