@@ -3,11 +3,12 @@ import React from 'react';
 import Header from '@/components/app/Header';
 import Footer from '@/components/app/Footer';
 import PromptGenerator from '@/components/app/PromptGenerator';
+import FunnyCatSection from '@/components/app/FunnyCatSection';
 import LovartSection from '@/components/app/LovartSection';
 import AbacusSection from '@/components/app/AbacusSection';
 import YoutubeProSection from '@/components/app/YoutubeProSection';
 import EcommerceIncubatorSection from '@/components/app/EcommerceIncubatorSection';
-import FunnyCatSection from '@/components/app/FunnyCatSection';
+import MyYoutubeChannelSection from '@/components/app/MyYoutubeChannelSection';
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
         <AbacusSection />
         <YoutubeProSection />
         <EcommerceIncubatorSection />
+        <MyYoutubeChannelSection />
       </main>
       <Footer />
     </div>
