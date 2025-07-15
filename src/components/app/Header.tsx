@@ -3,8 +3,8 @@ import React from 'react';
 
 const Header = () => {
   return (
-    <header className="text-center my-12 md:my-16">
-      <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-4 gradient-text">
+    <header className="text-center my-10 md:my-12">
+      <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-4 gradient-text max-w-4xl mx-auto">
         Gerador de Prompts Aleatoriamente Redundântico
       </h1>
       <p className="max-w-3xl mx-auto text-lg md:text-xl text-muted-foreground">
