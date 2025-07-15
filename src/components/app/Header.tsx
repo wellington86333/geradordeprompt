@@ -3,7 +3,7 @@ import React from 'react';
 
 const Header = () => {
   return (
-    <header className="text-center my-8 md:my-12">
+    <header className="text-center my-12 md:my-16">
       <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-4 gradient-text">
         Gerador de Prompts para IA
       </h1>
