@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Youtube, Clapperboard, BrainCircuit, Star } from 'lucide-react';
 
 const MyYoutubeChannelSection = () => {
@@ -12,12 +12,6 @@ const MyYoutubeChannelSection = () => {
           <div className="mx-auto mb-4">
              <Youtube className="h-16 w-16 text-red-500 animate-pulse" />
           </div>
-          <CardTitle className="text-3xl font-bold text-white tracking-tight">
-            Conheça o Canal Aleatoriamente Redundântico!
-          </CardTitle>
-          <CardDescription className="text-red-200 mt-2 text-lg max-w-3xl mx-auto">
-            Dicas, tutoriais e muita criatividade sobre o universo da inteligência artificial. Inscreva-se para não perder nada!
-          </CardDescription>
         </CardHeader>
         <CardContent className="p-8 pt-0">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-white mb-8 text-center">
