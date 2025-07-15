@@ -1,6 +1,6 @@
-
 'use client';
 import React, { useState } from 'react';
+import Image from 'next/image';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState('chatgpt');
@@ -200,6 +200,33 @@ export default function Home() {
           >
             Comece a Gerar
           </a>
+        </div>
+      </section>
+
+      {/* Funny Image Section */}
+      <section className="py-16 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="text-center md:text-left">
+              <h3 className="text-3xl font-bold text-gray-800 mb-4">A cara que você faz quando seu prompt dá errado...</h3>
+              <p className="text-lg text-muted-foreground mb-6">
+                Todos nós já passamos por isso. Você tem uma ideia genial, digita o prompt com toda a confiança do mundo, e a IA te devolve... algo que só pode ser descrito como um pesadelo digital.
+              </p>
+              <p className="text-lg text-muted-foreground">
+                Não se desespere! Nosso gerador está aqui para evitar que você arranque os cabelos (ou o que sobrou deles).
+              </p>
+            </div>
+            <div className="flex justify-center">
+              <Image 
+                src="https://storage.googleapis.com/genai_studio_project_052324_021909/f6c40608-d14c-4235-8664-9b5783359c34.jpeg" 
+                alt="Rosto frustrado com prompt de IA"
+                width={400}
+                height={400}
+                className="rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-300"
+                data-ai-hint="frustrated man"
+              />
+            </div>
+          </div>
         </div>
       </section>
 
@@ -482,5 +509,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
