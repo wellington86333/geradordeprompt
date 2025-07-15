@@ -31,7 +31,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-gray-200">Gerador de Prompt de IA</h2>
           <p className="text-center text-muted-foreground mt-2 mb-10 max-w-2xl mx-auto">
-            Gerador de prompt perfeito para vídeos em VO3 da Google. Inspirado e adaptado de <a href="https://chatgpt.com/g/g-686d94b362048191af9ce1fcc9f46b9e-veo3-fazedor-de-prompts" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">VEO3 - Fazedor de Prompts</a> por Bruno Somma Bechieli.
+            Crie o prompt perfeito para suas necessidades. Selecione o modelo de IA, descreva o que você deseja e nossa ferramenta irá gerar um prompt otimizado para você.
           </p>
           <PromptGenerator />
         </div>
@@ -73,6 +73,14 @@ export default function Home() {
         buttonText="Experimente o Gerador de Prompts"
         link="#gerador"
       />
+
+      <section className="py-8 bg-background">
+        <div className="container mx-auto px-4 text-center">
+        <p className="text-sm text-muted-foreground">
+            Gerador de prompt perfeito para vídeos em VO3 da Google. Inspirado e adaptado de <a href="https://chatgpt.com/g/g-686d94b362048191af9ce1fcc9f46b9e-veo3-fazedor-de-prompts" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">VEO3 - Fazedor de Prompts</a> por Bruno Somma Bechieli.
+          </p>
+        </div>
+      </section>
 
       <Footer />
     </div>
