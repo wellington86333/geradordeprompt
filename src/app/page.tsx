@@ -21,7 +21,7 @@ export default function Home() {
        {/* Hero Section */}
        <CTASection
         title="Crie Prompts de IA Perfeitos"
-        description="Gere prompts eficazes para VEO, ChatGPT, MidJourney e outras ferramentas de IA com nossa interface simplificada."
+        description="Gere prompts eficazes para VO3 Google, ChatGPT, MidJourney e outras ferramentas de IA com nossa interface simplificada."
         buttonText="Comece a Gerar"
         link="#gerador"
       />
@@ -31,7 +31,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-gray-200">Gerador de Prompt de IA</h2>
           <p className="text-center text-muted-foreground mt-2 mb-10 max-w-2xl mx-auto">
-            Gerador de prompt perfeito para vídeos em VEO da Google. Inspirado e adaptado de <a href="https://chatgpt.com/g/g-686d94b362048191af9ce1fcc9f46b9e-veo3-fazedor-de-prompts" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">VEO3 - Fazedor de Prompts</a> por Bruno Somma Bechieli.
+            Gerador de prompt perfeito para vídeos em VO3 da Google. Inspirado e adaptado de <a href="https://chatgpt.com/g/g-686d94b362048191af9ce1fcc9f46b9e-veo3-fazedor-de-prompts" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">VEO3 - Fazedor de Prompts</a> por Bruno Somma Bechieli.
           </p>
           <PromptGenerator />
         </div>

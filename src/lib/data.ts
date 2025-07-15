@@ -9,7 +9,7 @@ export type AIModels = Record<string, AIModel>;
   
 export const aiModels: AIModels = {
     veo: {
-        name: 'VEO',
+        name: 'VO3 Google',
         description: 'Modelo de IA do Google para geração de vídeo de alta qualidade a partir de texto.',
         example: 'Um drone sobrevoando uma praia tropical com águas cristalinas e palmeiras ao pôr do sol, cinematográfico, 1080p.',
         syntaxGuide: 'Descreva a cena com detalhes visuais, especificando o tipo de filmagem (ex: "tomada de drone", "câmera lenta"), estilo (ex: "cinematográfico"), e qualidades técnicas (ex: "altamente detalhado", "1080p").'
