@@ -197,7 +197,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <h3 className="text-3xl font-bold text-center text-gray-800 dark:text-gray-200">Gerador de Prompt de IA</h3>
           <p className="text-center text-muted-foreground mt-2 mb-10">
-            Inspirado e adaptado de <a href="https://chatgpt.com/g/g-686d94b362048191af9ce1fcc9f46b9e-veo3-fazedor-de-prompts" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">VEO3 - Fazedor de Prompts</a> por Bruno Somma Bechieli.
+            Gerador de prompt perfeito para vídeos em VEO da Google. Inspirado e adaptado de <a href="https://chatgpt.com/g/g-686d94b362048191af9ce1fcc9f46b9e-veo3-fazedor-de-prompts" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">VEO3 - Fazedor de Prompts</a> por Bruno Somma Bechieli.
           </p>
           <PromptGenerator
             aiModels={aiModels}
