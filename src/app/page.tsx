@@ -6,6 +6,7 @@ import PromptGenerator from '@/components/app/PromptGenerator';
 import LovartSection from '@/components/app/LovartSection';
 import AbacusSection from '@/components/app/AbacusSection';
 import YoutubeProSection from '@/components/app/YoutubeProSection';
+import EcommerceIncubatorSection from '@/components/app/EcommerceIncubatorSection';
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
         <LovartSection />
         <AbacusSection />
         <YoutubeProSection />
+        <EcommerceIncubatorSection />
       </main>
       <Footer />
     </div>
