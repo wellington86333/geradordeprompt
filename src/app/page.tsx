@@ -7,6 +7,7 @@ import LovartSection from '@/components/app/LovartSection';
 import AbacusSection from '@/components/app/AbacusSection';
 import YoutubeProSection from '@/components/app/YoutubeProSection';
 import EcommerceIncubatorSection from '@/components/app/EcommerceIncubatorSection';
+import FunnyCatSection from '@/components/app/FunnyCatSection';
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <main className="flex-grow container mx-auto px-4 py-8">
         <Header />
         <PromptGenerator />
+        <FunnyCatSection />
         <LovartSection />
         <AbacusSection />
         <YoutubeProSection />
