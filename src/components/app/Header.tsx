@@ -15,10 +15,7 @@ const Header = () => {
         </div>
         <nav className="hidden md:block">
           <ul className="flex space-x-8">
-            <li><a href="#o-que-e" className="text-gray-600 dark:text-gray-300 hover:text-primary transition">O que é um Prompt?</a></li>
-            <li><a href="#passos" className="text-gray-600 dark:text-gray-300 hover:text-primary transition">Passos</a></li>
-            <li><a href="#dicas" className="text-gray-600 dark:text-gray-300 hover:text-primary transition">Dicas</a></li>
-            <li><a href="#gratis-pago" className="text-gray-600 dark:text-gray-300 hover:text-primary transition">Grátis vs Pago</a></li>
+            <li><a href="#gerador" className="text-gray-600 dark:text-gray-300 hover:text-primary transition">Gerador</a></li>
             <li><a href="#contato" className="text-gray-600 dark:text-gray-300 hover:text-primary transition">Contato</a></li>
           </ul>
         </nav>
