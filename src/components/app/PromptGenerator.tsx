@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { useToast } from "@/hooks/use-toast";
-import { Copy, Mic, Share2, Bot, Lightbulb, Target, Palette, Drama, MessageSquare, ShieldOff, CheckCircle, Download, RefreshCw, History, Bookmark } from 'lucide-react';
+import { Copy, Mic, Share2, Bot, Lightbulb, Target, Palette, Drama, MessageSquare, ShieldOff, CheckCircle, Download, RefreshCw, History, Bookmark, PenSquare } from 'lucide-react';
 
 const aiModels = [
   { value: 'claude', label: 'Claude 3' },
@@ -80,9 +80,12 @@ const PromptGenerator = () => {
       </CardHeader>
       <CardContent className="space-y-8 p-6">
         <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div className="md:col-span-1">
-                  <Label htmlFor="model" className="font-semibold mb-2 block">Modelo de IA</Label>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 items-start">
+                <div className="md:col-span-1 space-y-2">
+                  <Label htmlFor="model" className="flex items-center text-md font-semibold">
+                    <Bot className="mr-2 h-5 w-5 text-primary" />
+                    Modelo de IA
+                  </Label>
                   <Select value={model} onValueChange={handleSelectChange}>
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Selecione..." />
@@ -96,8 +99,11 @@ const PromptGenerator = () => {
                     </SelectContent>
                   </Select>
                 </div>
-                 <div className="md:col-span-3">
-                  <Label htmlFor="promptInput" className="font-semibold mb-2 block">Descreva sua Ideia</Label>
+                 <div className="md:col-span-3 space-y-2">
+                  <Label htmlFor="promptInput" className="flex items-center text-md font-semibold">
+                    <PenSquare className="mr-2 h-5 w-5 text-primary" />
+                    Descreva sua Ideia
+                  </Label>
                   <Textarea 
                     id="promptInput" 
                     placeholder="Ex: Crie uma legenda para um post sobre IA com estilo formal, tom divertido, para um podcast de gatos..." 
