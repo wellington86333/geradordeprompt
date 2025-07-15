@@ -41,14 +41,10 @@ const FunnyCatSection = () => {
                     </CardHeader>
                     <CardContent className="flex flex-col items-center gap-4">
                         <a href={imageSrc} target="_blank" rel="noopener noreferrer" className="w-full aspect-square relative rounded-lg overflow-hidden border-2 border-primary/20 shadow-inner block cursor-pointer">
-                            <Image 
+                            <img 
                                 src={imageSrc} 
                                 alt={altText} 
-                                layout="fill"
-                                objectFit="cover"
-                                data-ai-hint="scary mask"
-                                className="transform hover:scale-105 transition-transform duration-300"
-                                unoptimized
+                                className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-300"
                             />
                         </a>
                         <input
