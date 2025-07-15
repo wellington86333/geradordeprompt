@@ -47,7 +47,7 @@ const FunnyCatSection = () => {
                                 layout="fill"
                                 objectFit="cover"
                                 data-ai-hint="scary mask"
-                                className="transform hover:scale-105 transition-transform duration-300 animate-[subtle-float_6s_ease-in-out_infinite]"
+                                className="transform hover:scale-105 transition-transform duration-300"
                             />
                         </div>
                         <input
