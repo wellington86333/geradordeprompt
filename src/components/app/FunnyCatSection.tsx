@@ -40,7 +40,7 @@ const FunnyCatSection = () => {
                         <CardDescription className="text-muted-foreground">Ou quando você escolhe sua própria imagem viral.</CardDescription>
                     </CardHeader>
                     <CardContent className="flex flex-col items-center gap-4">
-                        <div className="w-full aspect-square relative rounded-lg overflow-hidden border-2 border-primary/20 shadow-inner">
+                        <a href={imageSrc} target="_blank" rel="noopener noreferrer" className="w-full aspect-square relative rounded-lg overflow-hidden border-2 border-primary/20 shadow-inner block cursor-pointer">
                             <Image 
                                 src={imageSrc} 
                                 alt={altText} 
@@ -49,7 +49,7 @@ const FunnyCatSection = () => {
                                 data-ai-hint="scary mask"
                                 className="transform hover:scale-105 transition-transform duration-300"
                             />
-                        </div>
+                        </a>
                         <input
                             type="file"
                             accept="image/*"
