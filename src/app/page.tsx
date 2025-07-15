@@ -15,6 +15,12 @@ export default function Home() {
       example: 'Escreva uma redação de 500 palavras sobre os benefícios da energia renovável para estudantes do ensino médio',
       syntaxGuide: 'Use objetivos claros, especifique o público e inclua instruções de formatação (ex: "em tópicos")'
     },
+    claude: {
+      name: 'Claude',
+      description: 'Modelo de IA da Anthropic focado em segurança e conversação natural.',
+      example: 'Explique o conceito de computação quântica como se eu tivesse cinco anos, focando na segurança.',
+      syntaxGuide: 'Ideal para diálogos. Forneça personas (ex: "Aja como..."). Use XML para estruturar tarefas complexas.'
+    },
     midjourney: {
       name: 'MidJourney',
       description: 'Gerador de arte de IA com personalização avançada de estilo',
@@ -26,6 +32,12 @@ export default function Home() {
       description: 'Geração de imagens de código aberto com suporte a prompts negativos',
       example: 'Ilhas flutuantes de fantasia [prompt negativo: estilo de desenho animado, baixa resolução] --stylize 800',
       syntaxGuide: 'Use colchetes para prompts negativos e "--stylize" para controle de criatividade'
+    },
+    dalle3: {
+      name: 'DALL-E 3',
+      description: 'Gerador de imagens da OpenAI que entende linguagem natural complexa.',
+      example: 'Uma pintura a óleo de um guaxinim em um terno lendo um livro em uma poltrona aconchegante.',
+      syntaxGuide: 'Seja descritivo e detalhado. DALL-E 3 entende frases completas e nuances, não precisa de sintaxe especial.'
     }
   };
   
@@ -36,6 +48,13 @@ export default function Home() {
       'Gere [número] ideias criativas para [tópico] com [restrição]',
       'Compare [item1] e [item2] com base em [critérios] em formato de tabela',
       'Resuma [conteúdo] em [número] tópicos com emojis'
+    ],
+    claude: [
+      'Aja como um [profissão] e explique [conceito] para um [público].',
+      'Crie um diálogo entre um [personagem A] e um [personagem B] sobre [tópico].',
+      'Resuma o seguinte texto sobre [assunto] e liste os pontos principais.',
+      'Forneça uma análise de sentimento sobre a seguinte frase: [frase].',
+      'Escreva um e-mail [formal/informal] para [destinatário] sobre [assunto].'
     ],
     midjourney: [
       '[Descrição da cena], [estilo], --v 5 --ar [proporção]',
@@ -50,6 +69,13 @@ export default function Home() {
       '[Objeto] com [características], [ambiente], [iluminação] [prompt negativo: falhas]',
       '[Criatura] com [traços], [pose] em [localização], [esquema de cores] [prompt negativo: imperfeições]',
       'Obra de arte estilo [estilo de arte] mostrando [assunto], [detalhes] [prompt negativo: baixa qualidade] --stylize [valor]'
+    ],
+    dalle3: [
+      'Uma ilustração detalhada de [assunto] em um estilo [estilo artístico].',
+      'Uma foto realista de [objeto] em um [ambiente] com [iluminação específica].',
+      'Um [personagem] fazendo [ação] em um cenário [fantástico/futurista].',
+      'Uma renderização 3D isométrica de um [cômodo] com [móveis e decoração].',
+      'A capa de um livro de [gênero] com o título "[título do livro]" em destaque.'
     ]
   };
   
@@ -99,6 +125,64 @@ export default function Home() {
           </button>
         </div>
       </header>
+      
+      {/* AI Prompt Generator Section */}
+      <section id="gerador" className="py-16 bg-primary/5">
+        <div className="container mx-auto px-4">
+          <h3 className="text-3xl font-bold text-center mb-12 text-gray-800">Gerador de Prompt de IA</h3>
+          <div className="max-w-4xl mx-auto bg-card rounded-lg shadow-lg overflow-hidden">
+            <div className="p-6">
+              <div className="mb-6">
+                <p className="text-muted-foreground mb-4">Selecione um modelo de IA para gerar um prompt:</p>
+                <div className="flex flex-wrap gap-2">
+                  {Object.entries(aiModels).map(([key, model]) => (
+                    <button key={key} onClick={() => setActiveTab(key)} className={`px-4 py-2 rounded-full text-sm font-medium transition ${activeTab === key ? 'bg-primary text-primary-foreground' : 'bg-muted text-foreground hover:bg-muted/80'}`}>
+                      {model.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="mb-6">
+                <label htmlFor="prompt-input" className="block text-foreground font-medium mb-2">Descreva o que você quer gerar:</label>
+                <textarea id="prompt-input" rows={4} className="w-full px-4 py-3 rounded-lg border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent" placeholder={`Descreva sua solicitação para ${aiModels[activeTab].name}...`} value={promptInput} onChange={(e) => setPromptInput(e.target.value)}></textarea>
+              </div>
+              <div className="flex justify-between items-center">
+                <button onClick={() => setShowSyntaxGuide(!showSyntaxGuide)} className="px-4 py-2 bg-muted text-foreground rounded-md hover:bg-muted/80 transition">
+                  {showSyntaxGuide ? 'Ocultar Guia' : 'Mostrar Guia'}
+                </button>
+                <button onClick={generatePrompt} disabled={!promptInput.trim()} className="px-6 py-3 rounded-lg font-medium text-white transition bg-primary hover:bg-primary/90 disabled:bg-gray-400 disabled:cursor-not-allowed">
+                  Gerar Prompt
+                </button>
+              </div>
+
+              {showSyntaxGuide && (
+                <div className="mt-6 p-4 bg-primary/10 rounded-lg border border-primary/20">
+                  <h4 className="font-semibold text-primary/90 mb-2">Guia de Sintaxe para {aiModels[activeTab].name}:</h4>
+                  <p className="text-muted-foreground">{aiModels[activeTab].syntaxGuide}</p>
+                </div>
+              )}
+
+              {generatedPrompt && (
+                <div className="mt-6 p-4 bg-muted rounded-lg border border-border">
+                  <h4 className="font-semibold text-gray-800 mb-2">Seu Prompt Gerado:</h4>
+                  <div className="bg-background p-4 rounded border border-input min-h-[80px] mb-4 whitespace-pre-wrap">{generatedPrompt}</div>
+                  <div className="flex justify-end space-x-2">
+                    <button onClick={copyToClipboard} className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition">Copiar</button>
+                    <button onClick={generatePrompt} className="px-4 py-2 bg-primary/10 text-primary rounded hover:bg-primary/20 transition">Gerar Novamente</button>
+                  </div>
+                </div>
+              )}
+              <div className="mt-6 p-4 bg-primary/10 rounded-lg border border-primary/20">
+                <h4 className="font-semibold text-primary/90 mb-2">Exemplo de Prompt para {aiModels[activeTab].name}:</h4>
+                <p className="text-muted-foreground">{aiModels[activeTab].example}</p>
+              </div>
+            </div>
+          </div>
+          <div className="mt-12 text-center">
+            <p className="text-muted-foreground">Lembre-se, o sucesso do seu gerador de IA depende da qualidade da sua entrada. Dedique tempo para criar cada prompt com cuidado e teste-o minuciosamente.</p>
+          </div>
+        </div>
+      </section>
 
       {/* Hero Section */}
       <section className="py-16 bg-gradient-to-r from-primary to-accent text-white">
@@ -283,64 +367,6 @@ export default function Home() {
           <div className="mt-8 p-6 bg-muted rounded-lg border-l-4 border-primary">
             <h4 className="text-xl font-semibold text-gray-800 mb-3">Escolhendo a Opção Certa</h4>
             <p className="text-gray-700">Comece com ferramentas gratuitas para entender suas necessidades. Para trabalho profissional, os planos pagos oferecem melhor qualidade, geração mais rápida e recursos avançados. Sempre verifique os direitos de uso para aplicações comerciais.</p>
-          </div>
-        </div>
-      </section>
-
-      {/* AI Prompt Generator Section */}
-      <section id="gerador" className="py-16 bg-primary/5">
-        <div className="container mx-auto px-4">
-          <h3 className="text-3xl font-bold text-center mb-12 text-gray-800">Gerador de Prompt de IA</h3>
-          <div className="max-w-4xl mx-auto bg-card rounded-lg shadow-lg overflow-hidden">
-            <div className="p-6">
-              <div className="mb-6">
-                <p className="text-muted-foreground mb-4">Selecione um modelo de IA para gerar um prompt:</p>
-                <div className="flex flex-wrap gap-2">
-                  {Object.entries(aiModels).map(([key, model]) => (
-                    <button key={key} onClick={() => setActiveTab(key)} className={`px-4 py-2 rounded-full text-sm font-medium transition ${activeTab === key ? 'bg-primary text-primary-foreground' : 'bg-muted text-foreground hover:bg-muted/80'}`}>
-                      {model.name}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <div className="mb-6">
-                <label htmlFor="prompt-input" className="block text-foreground font-medium mb-2">Descreva o que você quer gerar:</label>
-                <textarea id="prompt-input" rows={4} className="w-full px-4 py-3 rounded-lg border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent" placeholder={`Descreva sua solicitação para ${aiModels[activeTab].name}...`} value={promptInput} onChange={(e) => setPromptInput(e.target.value)}></textarea>
-              </div>
-              <div className="flex justify-between items-center">
-                <button onClick={() => setShowSyntaxGuide(!showSyntaxGuide)} className="px-4 py-2 bg-muted text-foreground rounded-md hover:bg-muted/80 transition">
-                  {showSyntaxGuide ? 'Ocultar Guia' : 'Mostrar Guia'}
-                </button>
-                <button onClick={generatePrompt} disabled={!promptInput.trim()} className="px-6 py-3 rounded-lg font-medium text-white transition bg-primary hover:bg-primary/90 disabled:bg-gray-400 disabled:cursor-not-allowed">
-                  Gerar Prompt
-                </button>
-              </div>
-
-              {showSyntaxGuide && (
-                <div className="mt-6 p-4 bg-primary/10 rounded-lg border border-primary/20">
-                  <h4 className="font-semibold text-primary/90 mb-2">Guia de Sintaxe para {aiModels[activeTab].name}:</h4>
-                  <p className="text-muted-foreground">{aiModels[activeTab].syntaxGuide}</p>
-                </div>
-              )}
-
-              {generatedPrompt && (
-                <div className="mt-6 p-4 bg-muted rounded-lg border border-border">
-                  <h4 className="font-semibold text-gray-800 mb-2">Seu Prompt Gerado:</h4>
-                  <div className="bg-background p-4 rounded border border-input min-h-[80px] mb-4 whitespace-pre-wrap">{generatedPrompt}</div>
-                  <div className="flex justify-end space-x-2">
-                    <button onClick={copyToClipboard} className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition">Copiar</button>
-                    <button onClick={generatePrompt} className="px-4 py-2 bg-primary/10 text-primary rounded hover:bg-primary/20 transition">Gerar Novamente</button>
-                  </div>
-                </div>
-              )}
-              <div className="mt-6 p-4 bg-primary/10 rounded-lg border border-primary/20">
-                <h4 className="font-semibold text-primary/90 mb-2">Exemplo de Prompt para {aiModels[activeTab].name}:</h4>
-                <p className="text-muted-foreground">{aiModels[activeTab].example}</p>
-              </div>
-            </div>
-          </div>
-          <div className="mt-12 text-center">
-            <p className="text-muted-foreground">Lembre-se, o sucesso do seu gerador de IA depende da qualidade da sua entrada. Dedique tempo para criar cada prompt com cuidado e teste-o minuciosamente.</p>
           </div>
         </div>
       </section>
