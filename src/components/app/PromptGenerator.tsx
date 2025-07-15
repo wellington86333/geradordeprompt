@@ -1,58 +1,121 @@
 'use client';
 import { Mic, MicOff, Copy, Share2, Save, Send } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useToast } from "@/hooks/use-toast";
+import { aiModels, promptTemplates } from '@/lib/data';
 
-type AIModel = {
-  name: string;
-  description: string;
-  example: string;
-  syntaxGuide: string;
-};
-
-type AIModels = Record<string, AIModel>;
-
-interface PromptGeneratorProps {
-  aiModels: AIModels;
-  activeTab: string;
-  setActiveTab: (tab: string) => void;
-  promptInput: string;
-  setPromptInput: (input: string) => void;
-  generatedPrompt: string;
-  showSyntaxGuide: boolean;
-  setShowSyntaxGuide: (show: boolean) => void;
-  isRecording: boolean;
-  handleVoiceInput: () => void;
-  generatePrompt: () => void;
-  copyToClipboard: () => void;
-  savePrompt: () => void;
-  sharePrompt: () => void;
-}
-
-const PromptGenerator: React.FC<PromptGeneratorProps> = ({ 
-  aiModels,
-  activeTab, 
-  setActiveTab, 
-  promptInput, 
-  setPromptInput, 
-  generatedPrompt, 
-  showSyntaxGuide, 
-  setShowSyntaxGuide, 
-  isRecording,
-  handleVoiceInput, 
-  generatePrompt, 
-  copyToClipboard,
-  savePrompt,
-  sharePrompt
-}) => {
-
+const PromptGenerator: React.FC = () => {
+  const { toast } = useToast();
+  const [activeTab, setActiveTab] = useState('veo');
+  const [generatedPrompt, setGeneratedPrompt] = useState('');
+  const [promptInput, setPromptInput] = useState('');
+  const [showSyntaxGuide, setShowSyntaxGuide] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+  const recognitionRef = useRef<any>(null);
   const [copied, setCopied] = useState(false);
 
-  const handleCopy = () => {
-    copyToClipboard();
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (SpeechRecognition) {
+        const recognition = new SpeechRecognition();
+        recognition.continuous = false;
+        recognition.lang = 'pt-BR';
+        recognition.interimResults = false;
+
+        recognition.onresult = (event) => {
+          const transcript = event.results[0][0].transcript;
+          setPromptInput(transcript);
+          setIsRecording(false);
+        };
+
+        recognition.onerror = (event) => {
+          console.error('Speech recognition error', event.error);
+          setIsRecording(false);
+          toast({
+            variant: 'destructive',
+            title: 'Erro de Gravação',
+            description: 'Não foi possível iniciar o reconhecimento de voz.',
+          });
+        };
+        
+        recognition.onend = () => {
+          setIsRecording(false);
+        };
+
+        recognitionRef.current = recognition;
+      }
+    }
+  }, [toast]);
+
+  const handleVoiceInput = () => {
+    if (recognitionRef.current) {
+      if (isRecording) {
+        recognitionRef.current.stop();
+        setIsRecording(false);
+      } else {
+        recognitionRef.current.start();
+        setIsRecording(true);
+      }
+    } else {
+      toast({
+        variant: 'destructive',
+        title: 'Não Suportado',
+        description: 'O reconhecimento de voz não é suportado neste navegador.',
+      });
+    }
   };
 
+  const generatePrompt = () => {
+    if (!promptInput.trim()) return;
+    
+    const templates = promptTemplates[activeTab];
+    if (!templates) return;
+    
+    const randomTemplate = templates[Math.floor(Math.random() * templates.length)];
+    const newPrompt = randomTemplate.replace(/\[.*?\]/g, promptInput);
+    setGeneratedPrompt(newPrompt);
+  };
+
+  const copyToClipboard = () => {
+    if (generatedPrompt) {
+      navigator.clipboard.writeText(generatedPrompt).then(() => {
+        setCopied(true);
+        toast({
+          title: 'Copiado!',
+          description: 'Prompt copiado para a área de transferência!',
+        });
+        setTimeout(() => setCopied(false), 2000);
+      });
+    }
+  };
+
+  const savePrompt = () => {
+    if (generatedPrompt) {
+      const savedPrompts = JSON.parse(localStorage.getItem('savedPrompts') || '[]');
+      savedPrompts.push({
+        prompt: generatedPrompt,
+        timestamp: new Date().toISOString()
+      });
+      localStorage.setItem('savedPrompts', JSON.stringify(savedPrompts));
+      toast({
+        title: 'Salvo!',
+        description: 'Seu prompt foi salvo localmente.',
+      });
+    }
+  };
+
+  const sharePrompt = () => {
+    if (generatedPrompt) {
+      const shareUrl = `https://example.com/share?prompt=${encodeURIComponent(generatedPrompt)}`;
+      navigator.clipboard.writeText(shareUrl).then(() => {
+        toast({
+          title: 'Link Copiado!',
+          description: 'Link para compartilhar copiado para a área de transferência.',
+        });
+      });
+    }
+  };
 
   return (
     <div className="max-w-4xl mx-auto bg-card rounded-lg shadow-lg overflow-hidden">
@@ -96,7 +159,7 @@ const PromptGenerator: React.FC<PromptGeneratorProps> = ({
             <h4 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">Seu Prompt Gerado:</h4>
             <div className="bg-background p-4 rounded border border-input min-h-[80px] mb-4 whitespace-pre-wrap">{generatedPrompt}</div>
             <div className="flex justify-end space-x-2">
-              <button onClick={handleCopy} className={`px-4 py-2 rounded-lg font-medium transition flex items-center gap-2 ${copied ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-700 dark:bg-gray-600 dark:text-gray-200'} hover:bg-gray-300 dark:hover:bg-gray-500`}>
+              <button onClick={copyToClipboard} className={`px-4 py-2 rounded-lg font-medium transition flex items-center gap-2 ${copied ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-700 dark:bg-gray-600 dark:text-gray-200'} hover:bg-gray-300 dark:hover:bg-gray-500`}>
                  <Copy className="w-4 h-4" /> {copied ? 'Copiado!' : 'Copiar'}
               </button>
               <button onClick={generatePrompt} className="px-4 py-2 bg-primary/10 text-primary rounded hover:bg-primary/20 transition">Gerar Novamente</button>
