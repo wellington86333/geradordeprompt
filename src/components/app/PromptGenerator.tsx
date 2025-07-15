@@ -1,6 +1,6 @@
 'use client';
-import { Mic, MicOff } from 'lucide-react';
-import type React from 'react';
+import { Mic, MicOff, Copy, Share2, Save, Send } from 'lucide-react';
+import React, { useState } from 'react';
 
 type AIModel = {
   name: string;
@@ -24,6 +24,8 @@ interface PromptGeneratorProps {
   handleVoiceInput: () => void;
   generatePrompt: () => void;
   copyToClipboard: () => void;
+  savePrompt: () => void;
+  sharePrompt: () => void;
 }
 
 const PromptGenerator: React.FC<PromptGeneratorProps> = ({ 
@@ -38,8 +40,20 @@ const PromptGenerator: React.FC<PromptGeneratorProps> = ({
   isRecording,
   handleVoiceInput, 
   generatePrompt, 
-  copyToClipboard 
+  copyToClipboard,
+  savePrompt,
+  sharePrompt
 }) => {
+
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    copyToClipboard();
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+
   return (
     <div className="max-w-4xl mx-auto bg-card rounded-lg shadow-lg overflow-hidden">
       <div className="p-6">
@@ -66,7 +80,8 @@ const PromptGenerator: React.FC<PromptGeneratorProps> = ({
           <button onClick={() => setShowSyntaxGuide(!showSyntaxGuide)} className="px-4 py-2 bg-muted text-foreground rounded-md hover:bg-muted/80 transition">
             {showSyntaxGuide ? 'Ocultar Guia' : 'Mostrar Guia'}
           </button>
-          <button onClick={generatePrompt} disabled={!promptInput.trim()} className="px-6 py-3 rounded-lg font-medium text-white transition bg-primary hover:bg-primary/90 disabled:bg-gray-400 disabled:cursor-not-allowed">
+          <button onClick={generatePrompt} disabled={!promptInput.trim()} className="px-6 py-3 rounded-lg font-medium text-white transition bg-primary hover:bg-primary/90 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center gap-2">
+            <Send className="w-4 h-4" />
             Gerar Prompt
           </button>
         </div>
@@ -78,11 +93,19 @@ const PromptGenerator: React.FC<PromptGeneratorProps> = ({
         )}
         {generatedPrompt && (
           <div className="mt-6 p-4 bg-muted rounded-lg border border-border">
-            <h4 className="font-semibold text-gray-800 mb-2">Seu Prompt Gerado:</h4>
+            <h4 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">Seu Prompt Gerado:</h4>
             <div className="bg-background p-4 rounded border border-input min-h-[80px] mb-4 whitespace-pre-wrap">{generatedPrompt}</div>
             <div className="flex justify-end space-x-2">
-              <button onClick={copyToClipboard} className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition">Copiar</button>
+              <button onClick={handleCopy} className={`px-4 py-2 rounded-lg font-medium transition flex items-center gap-2 ${copied ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-700 dark:bg-gray-600 dark:text-gray-200'} hover:bg-gray-300 dark:hover:bg-gray-500`}>
+                 <Copy className="w-4 h-4" /> {copied ? 'Copiado!' : 'Copiar'}
+              </button>
               <button onClick={generatePrompt} className="px-4 py-2 bg-primary/10 text-primary rounded hover:bg-primary/20 transition">Gerar Novamente</button>
+              <button onClick={savePrompt} className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition flex items-center gap-2">
+                <Save className="w-4 h-4" /> Salvar
+              </button>
+              <button onClick={sharePrompt} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition flex items-center gap-2">
+                <Share2 className="w-4 h-4" /> Compartilhar
+              </button>
             </div>
           </div>
         )}
