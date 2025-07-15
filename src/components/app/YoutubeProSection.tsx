@@ -6,8 +6,8 @@ import { Youtube, ShoppingCart, Video } from 'lucide-react';
 
 const YoutubeProSection = () => {
   return (
-    <section className="my-16">
-      <Card className="w-full max-w-4xl mx-auto overflow-hidden bg-gradient-to-tr from-red-600/10 via-gray-900 to-black border-red-800/50 shadow-2xl shadow-red-500/10">
+    <section className="my-24">
+      <Card className="w-full max-w-5xl mx-auto overflow-hidden bg-gradient-to-tr from-red-600/10 via-gray-900 to-black border-red-800/50 shadow-2xl shadow-red-500/10">
         <CardHeader className="text-center p-8">
           <div className="mx-auto mb-4">
              <Youtube className="h-16 w-16 text-red-500" />
