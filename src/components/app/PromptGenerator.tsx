@@ -45,7 +45,15 @@ const PromptGenerator = () => {
 
   const generatePrompt = () => {
     const { objective, style, tone, context, negative } = formData;
-    const prompt = `**Objetivo:** ${objective}\n**Estilo:** ${style}\n**Tom:** ${tone}\n**Contexto:** ${context}\n**Não incluir:** ${negative}`;
+    if (!objective) {
+        toast({
+            title: "Campo Obrigatório",
+            description: "Por favor, preencha o campo 'Objetivo' para gerar um prompt.",
+            variant: "destructive",
+        });
+        return;
+    }
+    const prompt = `**Objetivo:** ${objective}\n**Estilo:** ${style || 'Não especificado'}\n**Tom:** ${tone || 'Não especificado'}\n**Contexto:** ${context || 'Não especificado'}\n**Não incluir:** ${negative || 'Nenhum'}`;
     setGeneratedPrompt(prompt);
   };
   
@@ -68,78 +76,85 @@ const PromptGenerator = () => {
           Selecione um modelo de IA e preencha os campos para criar seu prompt.
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="space-y-6">
-            <div>
-              <Label htmlFor="model" className="text-lg font-semibold mb-2 block">Modelo de IA</Label>
-              <Select value={formData.model} onValueChange={handleSelectChange}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Selecione um modelo..." />
-                </SelectTrigger>
-                <SelectContent>
-                  {aiModels.map((model) => (
-                    <SelectItem key={model.value} value={model.value}>
-                      {model.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+      <CardContent className="space-y-8">
+        <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <Label htmlFor="model" className="text-lg font-semibold mb-2 block">Modelo de IA</Label>
+                  <Select value={formData.model} onValueChange={handleSelectChange}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Selecione um modelo..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {aiModels.map((model) => (
+                        <SelectItem key={model.value} value={model.value}>
+                          {model.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                 <div>
+                  <Label htmlFor="objective" className="text-lg font-semibold mb-2 block">Objetivo</Label>
+                  <Textarea id="objective" placeholder="Ex: Criar uma legenda para um post sobre IA" value={formData.objective} onChange={handleInputChange} />
+                </div>
             </div>
-            <div>
-              <Label htmlFor="objective" className="text-lg font-semibold mb-2 block">Objetivo</Label>
-              <Textarea id="objective" placeholder="Ex: Criar uma legenda para um post sobre IA" value={formData.objective} onChange={handleInputChange} />
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <Label htmlFor="style" className="text-lg font-semibold mb-2 block">Estilo</Label>
+                  <Textarea id="style" placeholder="Ex: Formal, casual, técnico, poético" value={formData.style} onChange={handleInputChange} />
+                </div>
+                <div>
+                  <Label htmlFor="tone" className="text-lg font-semibold mb-2 block">Tom</Label>
+                  <Textarea id="tone" placeholder="Ex: Inspirador, divertido, sério" value={formData.tone} onChange={handleInputChange} />
+                </div>
             </div>
-            <div>
-              <Label htmlFor="style" className="text-lg font-semibold mb-2 block">Estilo</Label>
-              <Textarea id="style" placeholder="Ex: Formal, casual, técnico, poético" value={formData.style} onChange={handleInputChange} />
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                 <div>
+                  <Label htmlFor="context" className="text-lg font-semibold mb-2 block">Contexto</Label>
+                  <Textarea id="context" placeholder="Ex: Público-alvo, informações relevantes" value={formData.context} onChange={handleInputChange} />
+                </div>
+                 <div>
+                  <Label htmlFor="negative" className="text-lg font-semibold mb-2 block">O que evitar?</Label>
+                  <Textarea id="negative" placeholder="Ex: Jargões técnicos, linguagem negativa" value={formData.negative} onChange={handleInputChange} />
+                </div>
             </div>
-            <div>
-              <Label htmlFor="tone" className="text-lg font-semibold mb-2 block">Tom</Label>
-              <Textarea id="tone" placeholder="Ex: Inspirador, divertido, sério" value={formData.tone} onChange={handleInputChange} />
-            </div>
-            <div>
-              <Label htmlFor="context" className="text-lg font-semibold mb-2 block">Contexto</Label>
-              <Textarea id="context" placeholder="Ex: Público-alvo, informações relevantes" value={formData.context} onChange={handleInputChange} />
-            </div>
-             <div>
-              <Label htmlFor="negative" className="text-lg font-semibold mb-2 block">O que evitar?</Label>
-              <Textarea id="negative" placeholder="Ex: Jargões técnicos, linguagem negativa" value={formData.negative} onChange={handleInputChange} />
-            </div>
-             <div className="flex flex-col sm:flex-row gap-4">
-                <Button onClick={generatePrompt} size="lg" className="flex-1 animated-gradient-bg text-white font-bold transition-transform duration-300 hover:scale-105">
-                    <Bot className="mr-2"/>
-                    Gerar Prompt
-                </Button>
-                 <Button variant="outline" size="lg" className="transition-transform duration-300 hover:scale-105">
-                    <Mic className="mr-2"/>
-                    Comando de Voz
-                </Button>
-            </div>
-          </div>
-          <div className="flex flex-col">
+        </div>
+        
+        <div className="flex flex-col sm:flex-row gap-4">
+            <Button onClick={generatePrompt} size="lg" className="flex-1 animated-gradient-bg text-white font-bold transition-transform duration-300 hover:scale-105">
+                <Bot className="mr-2"/>
+                Gerar Prompt
+            </Button>
+             <Button variant="outline" size="lg" className="transition-transform duration-300 hover:scale-105">
+                <Mic className="mr-2"/>
+                Comando de Voz
+            </Button>
+        </div>
+
+        <div className="space-y-2">
             <Label className="text-lg font-semibold mb-2 block">Prompt Gerado</Label>
-            <div className="relative flex-grow">
+            <div className="relative">
                 <Textarea
                     readOnly
                     value={generatedPrompt}
-                    className="h-full min-h-[300px] text-base bg-secondary/30"
+                    className="h-full min-h-[200px] text-base bg-secondary/30"
                     placeholder="Seu prompt aparecerá aqui..."
                 />
+                 <div className="absolute top-2 right-2 flex gap-1">
+                    <Button variant="ghost" size="icon" onClick={copyToClipboard} title="Copiar">
+                        <Copy className="h-5 w-5"/>
+                    </Button>
+                    <Button variant="ghost" size="icon" title="Salvar">
+                        <Star className="h-5 w-5" />
+                    </Button>
+                    <Button variant="ghost" size="icon" title="Compartilhar">
+                        <Share2 className="h-5 w-5" />
+                    </Button>
+                 </div>
             </div>
-             <div className="flex justify-end gap-2 mt-4">
-                <Button variant="ghost" size="icon" onClick={copyToClipboard} title="Copiar">
-                    <Copy />
-                </Button>
-                <Button variant="ghost" size="icon" title="Salvar">
-                    <Star />
-                </Button>
-                <Button variant="ghost" size="icon" title="Compartilhar">
-                    <Share2 />
-                </Button>
-             </div>
-          </div>
         </div>
+
       </CardContent>
       </div>
     </Card>
