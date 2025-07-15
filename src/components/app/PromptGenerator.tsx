@@ -79,41 +79,43 @@ const PromptGenerator = () => {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-8 p-6">
-        <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 items-start">
-                <div className="md:col-span-1 space-y-2">
-                  <Label htmlFor="model" className="flex items-center text-md font-semibold">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+            <div className="space-y-2">
+                <Label htmlFor="model" className="flex items-center text-md font-semibold mb-2">
                     <Bot className="mr-2 h-5 w-5 text-primary" />
                     Modelo de IA
-                  </Label>
-                  <Select value={model} onValueChange={handleSelectChange}>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Selecione..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {aiModels.map((m) => (
-                        <SelectItem key={m.value} value={m.value}>
-                          {m.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                 <div className="md:col-span-3 space-y-2">
-                  <Label htmlFor="promptInput" className="flex items-center text-md font-semibold">
-                    <PenSquare className="mr-2 h-5 w-5 text-primary" />
-                    Descreva sua Ideia
-                  </Label>
-                  <Textarea 
-                    id="promptInput" 
-                    placeholder="Ex: Crie uma legenda para um post sobre IA com estilo formal, tom divertido, para um podcast de gatos..." 
-                    value={promptInput} 
-                    onChange={handleInputChange}
-                    className="min-h-[120px] text-base"
-                   />
-                </div>
+                </Label>
+                <Card className="p-2">
+                    <Select value={model} onValueChange={handleSelectChange}>
+                        <SelectTrigger className="w-full border-0">
+                        <SelectValue placeholder="Selecione..." />
+                        </SelectTrigger>
+                        <SelectContent>
+                        {aiModels.map((m) => (
+                            <SelectItem key={m.value} value={m.value}>
+                            {m.label}
+                            </SelectItem>
+                        ))}
+                        </SelectContent>
+                    </Select>
+                </Card>
+            </div>
+            
+            <div className="md:col-span-2 space-y-2">
+                <Label htmlFor="promptInput" className="flex items-center text-md font-semibold mb-2">
+                <PenSquare className="mr-2 h-5 w-5 text-primary" />
+                Descreva sua Ideia
+                </Label>
+                <Textarea 
+                id="promptInput" 
+                placeholder="Ex: Crie uma legenda para um post sobre IA com estilo formal, tom divertido, para um podcast de gatos..." 
+                value={promptInput} 
+                onChange={handleInputChange}
+                className="min-h-[120px] text-base"
+                />
             </div>
         </div>
+
 
         <div className="p-4 bg-secondary/30 rounded-lg">
             <h3 className="font-semibold mb-4 flex items-center"><Lightbulb className="mr-2 text-yellow-400"/>Dicas para um Prompt Perfeito</h3>
