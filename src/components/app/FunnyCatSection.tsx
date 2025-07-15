@@ -48,6 +48,7 @@ const FunnyCatSection = () => {
                                 objectFit="cover"
                                 data-ai-hint="scary mask"
                                 className="transform hover:scale-105 transition-transform duration-300"
+                                unoptimized
                             />
                         </a>
                         <input
