@@ -3,54 +3,53 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  font-family: 'Inter', sans-serif;
-}
-
 @layer base {
   :root {
-    --background: 20 14.3% 95.9%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 262.1 83.3% 57.8%;
-    --primary-foreground: 60 9.1% 97.8%;
-    --secondary: 60 4.8% 95.9%;
-    --secondary-foreground: 24 9.8% 10%;
-    --muted: 60 4.8% 95.9%;
-    --muted-foreground: 25 5.3% 44.7%;
-    --accent: 220 83% 63%;
-    --accent-foreground: 60 9.1% 97.8%;
+    --background-start-rgb: 18, 18, 18;
+    --background-end-rgb: 18, 18, 18;
+    
+    --primary: 138 35 135;
+    --secondary: 233 64 87;
+    --accent: 242 113 33;
+    
+    --foreground-rgb: 255, 255, 255;
+    --muted-foreground-rgb: 204, 204, 204;
+    
+    --dark: 18 18 18;
+    --light: 255 255 255;
+    
+    --radius: 1rem;
+    
+    /* Converted ShadCN Variables */
+    --background: 0 0% 7.1%; /* approx. #121212 */
+    --foreground: 0 0% 100%; /* #ffffff */
+    --card: 0 0% 100% / 0.05;
+    --card-foreground: 0 0% 100%;
+    --popover: 0 0% 7.1%;
+    --popover-foreground: 0 0% 100%;
+    
+    --primary-hsl: 301 62% 34%; /* #8A2387 */
+    --primary-foreground-hsl: 0 0% 100%;
+    
+    --secondary-hsl: 353 79% 58%; /* #E94057 */
+    --secondary-foreground-hsl: 0 0% 100%;
+
+    --muted: 0 0% 100% / 0.05;
+    --muted-foreground:  0 0% 80%; /* #cccccc */
+
+    --accent-hsl: 23 90% 54%; /* #F27121 */
+    --accent-foreground-hsl: 0 0% 100%;
+    
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 60 9.1% 97.8%;
-    --border: 20 5.9% 90%;
-    --input: 20 5.9% 90%;
-    --ring: 262.1 83.3% 57.8%;
-    --radius: 0.5rem;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 301 62% 34% / 0.3; /* primary with alpha */
+    --input: 0 0% 100% / 0.05;
+    --ring: 23 90% 54%;
   }
- 
+
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 60 9.1% 97.8%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 60 9.1% 97.8%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 60 9.1% 97.8%;
-    --primary: 262.1 83.3% 57.8%;
-    --primary-foreground: 60 9.1% 97.8%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 60 9.1% 97.8%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 220 83% 63%;
-    --accent-foreground: 60 9.1% 97.8%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 60 9.1% 97.8%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 262.1 83.3% 57.8%;
+     /* Using root variables directly as the design is dark-only */
   }
 }
 
@@ -63,13 +62,57 @@ body {
   }
 }
 
-@layer utilities {
-  .animated-gradient {
+@layer components {
+  .section-title {
+    @apply text-3xl md:text-4xl font-bold mb-6 relative pb-3;
+  }
+  .section-title::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-20 h-1 rounded-full;
+    background: linear-gradient(135deg, hsl(var(--primary-hsl)), hsl(var(--secondary-hsl)), hsl(var(--accent-hsl)));
+  }
+
+  .animated-gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(var(--primary-hsl)), hsl(var(--secondary-hsl)), hsl(var(--accent-hsl)));
+  }
+
+  .animated-gradient-bg {
+    background: linear-gradient(135deg, hsl(var(--primary-hsl)), hsl(var(--secondary-hsl)), hsl(var(--accent-hsl)));
     background-size: 200% auto;
-    background-image: linear-gradient(to right, hsl(var(--primary)) 0%, hsl(var(--accent)) 50%, hsl(var(--primary)) 100%);
     transition: background-position 0.5s ease-in-out;
   }
-  .animated-gradient:hover {
+  .animated-gradient-bg:hover {
     background-position: right center;
   }
+}
+
+@keyframes fadeInDown {
+  from {
+      opacity: 0;
+      transform: translateY(-30px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 hsl(var(--accent-hsl), 0.7); }
+    50% { transform: scale(1.02); box-shadow: 0 0 10px 5px hsl(var(--accent-hsl), 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 hsl(var(--accent-hsl), 0); }
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.animate-fadeInDown {
+  animation: fadeInDown 1s ease;
+}
+
+.animate-pulse-custom {
+  animation: pulse 2s infinite;
 }
