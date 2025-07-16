@@ -8,6 +8,9 @@ import LovartSection from '@/components/app/LovartSection';
 import AbacusSection from '@/components/app/AbacusSection';
 import YoutubeProSection from '@/components/app/YoutubeProSection';
 import EcommerceIncubatorSection from '@/components/app/EcommerceIncubatorSection';
+import StatsSection from '@/components/app/StatsSection';
+import TestimonialsSection from '@/components/app/TestimonialsSection';
+import FAQSection from '@/components/app/FAQSection';
 
 export default function Home() {
   return (
@@ -16,10 +19,13 @@ export default function Home() {
         <Header />
         <PromptGenerator />
         <DraculaSection />
+        <StatsSection />
+        <TestimonialsSection />
         <LovartSection />
         <AbacusSection />
         <YoutubeProSection />
         <EcommerceIncubatorSection />
+        <FAQSection />
       </main>
       <Footer />
     </div>

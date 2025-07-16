@@ -39,6 +39,9 @@ const PromptGenerator = () => {
   const [model, setModel] = useState('chatgpt');
   const [promptInput, setPromptInput] = useState('');
   const [generatedPrompt, setGeneratedPrompt] = useState('');
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [promptHistory, setPromptHistory] = useState<string[]>([]);
+  const [savedPrompts, setSavedPrompts] = useState<string[]>([]);
   const { toast } = useToast();
 
   const selectedModel = useMemo(() => 
@@ -64,6 +67,10 @@ const PromptGenerator = () => {
         return;
     }
 
+    setIsGenerating(true);
+    
+    // Simulate AI processing time
+    setTimeout(() => {
     // Enhanced prompt generation logic for different AI models
     let promptTemplate = '';
     
@@ -199,6 +206,14 @@ Please respond in English.`;
     }
     
     setGeneratedPrompt(promptTemplate);
+    setPromptHistory(prev => [promptTemplate, ...prev.slice(0, 9)]); // Keep last 10
+    setIsGenerating(false);
+    
+    toast({
+      title: "Prompt Generated!",
+      description: `Optimized prompt created for ${selectedModel.label}`,
+    });
+    }, 1500); // 1.5 second delay for better UX
   };
   
   const copyToClipboard = () => {
@@ -207,6 +222,42 @@ Please respond in English.`;
       toast({
         title: "Copied!",
         description: "The prompt has been copied to clipboard.",
+      });
+    }
+  };
+
+  const savePrompt = () => {
+    if (generatedPrompt && !savedPrompts.includes(generatedPrompt)) {
+      setSavedPrompts(prev => [generatedPrompt, ...prev]);
+      toast({
+        title: "Prompt Saved!",
+        description: "Added to your saved prompts collection.",
+      });
+    }
+  };
+
+  const clearAll = () => {
+    setPromptInput('');
+    setGeneratedPrompt('');
+    toast({
+      title: "Cleared!",
+      description: "All fields have been reset.",
+    });
+  };
+
+  const downloadPrompt = () => {
+    if (generatedPrompt) {
+      const element = document.createElement('a');
+      const file = new Blob([generatedPrompt], { type: 'text/plain' });
+      element.href = URL.createObjectURL(file);
+      element.download = `prompt_${selectedModel.value}_${Date.now()}.txt`;
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+      
+      toast({
+        title: "Downloaded!",
+        description: "Prompt saved as text file.",
       });
     }
   };
@@ -283,13 +334,32 @@ Please respond in English.`;
         </div>
         
         <div className="flex flex-col sm:flex-row gap-4">
-            <Button onClick={generatePrompt} size="lg" className="flex-1 animated-gradient-bg text-white font-bold transition-transform duration-300 hover:scale-105">
+            <Button 
+              onClick={generatePrompt} 
+              disabled={isGenerating}
+              size="lg" 
+              className="flex-1 animated-gradient-bg text-white font-bold transition-transform duration-300 hover:scale-105 disabled:opacity-50"
+            >
+                {isGenerating ? (
+                  <>
+                    <RefreshCw className="mr-2 animate-spin"/>
+                    Generating...
+                  </>
+                ) : (
+                  <>
                 <Bot className="mr-2"/>
                 Generate Optimized Prompt
+                  </>
+                )}
             </Button>
-             <Button variant="outline" size="lg" className="transition-transform duration-300 hover:scale-105">
-                <Mic className="mr-2"/>
-                Voice Command
+             <Button 
+               variant="outline" 
+               size="lg" 
+               onClick={clearAll}
+               className="transition-transform duration-300 hover:scale-105"
+             >
+                <RefreshCw className="mr-2"/>
+                Clear All
             </Button>
         </div>
 
@@ -303,28 +373,108 @@ Please respond in English.`;
                     placeholder="Your optimized prompt in English will appear here..."
                 />
                  <div className="absolute top-2 right-2 flex gap-1">
-                    <Button variant="ghost" size="icon" onClick={copyToClipboard} title="Copy">
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      onClick={copyToClipboard} 
+                      disabled={!generatedPrompt}
+                      title="Copy to Clipboard"
+                    >
                         <Copy className="h-5 w-5"/>
                     </Button>
-                    <Button variant="ghost" size="icon" title="Save">
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      onClick={savePrompt}
+                      disabled={!generatedPrompt}
+                      title="Save Prompt"
+                    >
                         <Bookmark className="h-5 w-5" />
                     </Button>
-                     <Button variant="ghost" size="icon" title="Download">
+                     <Button 
+                       variant="ghost" 
+                       size="icon" 
+                       onClick={downloadPrompt}
+                       disabled={!generatedPrompt}
+                       title="Download as TXT"
+                     >
                         <Download className="h-5 w-5" />
                     </Button>
-                    <Button variant="ghost" size="icon" title="History">
-                        <History className="h-5 w-5" />
-                    </Button>
-                     <Button variant="ghost" size="icon" title="Clear">
-                        <RefreshCw className="h-5 w-5" />
-                    </Button>
-                    <Button variant="ghost" size="icon" title="Share">
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      onClick={() => {
+                        if (navigator.share && generatedPrompt) {
+                          navigator.share({
+                            title: 'AI Prompt',
+                            text: generatedPrompt,
+                          });
+                        } else {
+                          copyToClipboard();
+                        }
+                      }}
+                      disabled={!generatedPrompt}
+                      title="Share Prompt"
+                    >
                         <Share2 className="h-5 w-5" />
                     </Button>
                  </div>
             </div>
         </div>
 
+        {/* Prompt History Section */}
+        {promptHistory.length > 0 && (
+          <div className="space-y-2">
+            <Label className="text-lg font-semibold mb-2 block flex items-center">
+              <History className="mr-2 h-5 w-5 text-primary" />
+              Recent Prompts
+            </Label>
+            <div className="max-h-40 overflow-y-auto space-y-2">
+              {promptHistory.map((prompt, index) => (
+                <div 
+                  key={index} 
+                  className="p-3 bg-secondary/20 rounded-lg cursor-pointer hover:bg-secondary/40 transition-colors"
+                  onClick={() => setGeneratedPrompt(prompt)}
+                >
+                  <p className="text-sm truncate">{prompt.substring(0, 100)}...</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Saved Prompts Section */}
+        {savedPrompts.length > 0 && (
+          <div className="space-y-2">
+            <Label className="text-lg font-semibold mb-2 block flex items-center">
+              <Bookmark className="mr-2 h-5 w-5 text-primary" />
+              Saved Prompts ({savedPrompts.length})
+            </Label>
+            <div className="max-h-40 overflow-y-auto space-y-2">
+              {savedPrompts.map((prompt, index) => (
+                <div 
+                  key={index} 
+                  className="p-3 bg-green-500/10 rounded-lg cursor-pointer hover:bg-green-500/20 transition-colors flex justify-between items-center"
+                >
+                  <p 
+                    className="text-sm truncate flex-1 cursor-pointer"
+                    onClick={() => setGeneratedPrompt(prompt)}
+                  >
+                    {prompt.substring(0, 100)}...
+                  </p>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setSavedPrompts(prev => prev.filter((_, i) => i !== index))}
+                    className="ml-2 text-red-500 hover:text-red-700"
+                  >
+                    ×
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </CardContent>
       </div>
     </Card>
