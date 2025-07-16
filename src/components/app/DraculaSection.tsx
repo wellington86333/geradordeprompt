@@ -10,21 +10,29 @@ const DraculaSection = () => {
         <CardContent className="p-8 text-center">
           <div className="relative mb-6">
             <Image
-              src="/images/dracula.png"
-              alt="Drácula engraçado"
-              width={300}
-              height={300}
-              className="mx-auto rounded-lg shadow-lg"
+              src="/images/horror-mask.png"
+              alt="Personagem assustador com máscara e caveiras"
+              width={400}
+              height={400}
+              className="mx-auto rounded-lg shadow-2xl border-2 border-red-600/30"
               priority
             />
           </div>
           <h3 className="text-2xl font-bold text-white mb-4">
-            "Eu não bebo... vinho! Prefiro prompts bem elaborados! 🧛‍♂️"
+            "Prompts mal feitos me dão pesadelos! 💀"
           </h3>
           <p className="text-gray-300 text-lg italic">
-            Quando até o Drácula precisa de uma IA para criar conteúdo de qualidade... 
-            É melhor usar nosso gerador de prompts mesmo! 🦇✨
+            Não deixe seus prompts assombrarem seus resultados... 
+            Use nosso gerador para criar prompts que realmente funcionam! 🎭⚡
           </p>
+          <div className="mt-6 flex justify-center space-x-2">
+            <span className="text-2xl">💀</span>
+            <span className="text-2xl">🎭</span>
+            <span className="text-2xl">💀</span>
+            <span className="text-2xl">🎭</span>
+            <span className="text-2xl">💀</span>
+            <span className="text-2xl">🎭</span>
+          </div>
         </CardContent>
       </Card>
     </section>

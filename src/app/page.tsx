@@ -8,6 +8,8 @@ import StatsSection from '@/components/app/StatsSection';
 import TestimonialsSection from '@/components/app/TestimonialsSection';
 import FAQSection from '@/components/app/FAQSection';
 import CTASection from '@/components/app/CTASection';
+import DraculaSection from '@/components/app/DraculaSection';
+import AbacusSection from '@/components/app/AbacusSection';
 
 export default function Home() {
   return (
@@ -16,8 +18,10 @@ export default function Home() {
         <Header />
         <PromptGenerator />
         <FeaturesSection />
+        <DraculaSection />
         <StatsSection />
         <TestimonialsSection />
+        <AbacusSection />
         <CTASection />
         <FAQSection />
       </main>

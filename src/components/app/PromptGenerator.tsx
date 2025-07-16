@@ -26,14 +26,14 @@ import { PromptGenerator as PromptGen, PromptGenerationOptions } from '@/lib/pro
 import { promptTemplates, promptCategories, getTemplatesByCategory, PromptTemplate } from '@/lib/prompt-templates';
 
 const aiModels = [
-  { value: 'chatgpt', label: 'ChatGPT (OpenAI)', description: 'Best for conversational AI and general tasks' },
-  { value: 'claude', label: 'Claude (Anthropic)', description: 'Excellent for analysis and creative writing' },
-  { value: 'gemini', label: 'Gemini (Google)', description: 'Great for multimodal tasks and reasoning' },
-  { value: 'perplexity', label: 'Perplexity', description: 'Perfect for research and fact-checking' },
-  { value: 'vo3_google', label: 'VO3 Google', description: 'Specialized for video generation' },
-  { value: 'midjourney', label: 'Midjourney', description: 'Top choice for image generation' },
-  { value: 'dall_e', label: 'DALL-E (OpenAI)', description: 'Creative image generation' },
-  { value: 'stable_diffusion', label: 'Stable Diffusion', description: 'Open-source image generation' },
+  { value: 'chatgpt', label: 'ChatGPT (OpenAI)', description: 'Ideal para conversação e tarefas gerais' },
+  { value: 'claude', label: 'Claude (Anthropic)', description: 'Excelente para análise e escrita criativa' },
+  { value: 'gemini', label: 'Gemini (Google)', description: 'Ótimo para tarefas multimodais e raciocínio' },
+  { value: 'perplexity', label: 'Perplexity', description: 'Perfeito para pesquisa e verificação de fatos' },
+  { value: 'vo3_google', label: 'VO3 Google', description: 'Especializado em geração de vídeos' },
+  { value: 'midjourney', label: 'Midjourney', description: 'Melhor escolha para geração de imagens' },
+  { value: 'dall_e', label: 'DALL-E (OpenAI)', description: 'Geração criativa de imagens' },
+  { value: 'stable_diffusion', label: 'Stable Diffusion', description: 'Geração de imagens open-source' },
 ];
 
 const promptTips = [
