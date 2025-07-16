@@ -287,7 +287,7 @@ Responda em português brasileiro com dados realistas e específicos.`,
 - Steps: 30-50
 - CFG Scale: 7-12
 
-Responda em inglês para melhor compatibilidade com IAs de imagem.`,
+Responda em português para melhor compatibilidade com o usuário, mas mantenha os termos técnicos em inglês para as IAs de imagem.`,
         variables: ['subject', 'style', 'mood', 'colors', 'composition', 'lighting', 'perspective', 'aspectRatio'],
         aiModels: ['midjourney', 'dall_e', 'stable_diffusion']
     },
