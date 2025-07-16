@@ -1,65 +1,72 @@
+'use client';
+
 import React from 'react';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/ui/accordion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { HelpCircle } from 'lucide-react';
+} from "@/components/ui/accordion";
 
 const FAQSection = () => {
   const faqs = [
     {
-      question: "How does the AI prompt generator work?",
-      answer: "Our generator analyzes your input and creates optimized prompts tailored for specific AI models. Each template is designed to maximize the effectiveness of different AI platforms like ChatGPT, Claude, Gemini, and more."
+      question: "O que é um gerador de prompts?",
+      answer: "Um gerador de prompts é uma ferramenta que ajuda a criar instruções otimizadas para modelos de IA como ChatGPT, Claude, Midjourney e outros. Ele estrutura suas ideias em um formato que maximiza a qualidade das respostas da IA, economizando tempo e melhorando os resultados."
     },
     {
-      question: "Why are all outputs in English?",
-      answer: "English outputs ensure maximum compatibility with AI models, as most are trained primarily on English data. This provides better results and consistency across different platforms."
+      question: "Por que devo usar um gerador de prompts em vez de escrever diretamente?",
+      answer: "Prompts bem estruturados produzem resultados significativamente melhores. Nosso gerador incorpora práticas recomendadas para cada modelo de IA, adiciona contexto necessário, e formata as instruções de maneira ideal, resultando em respostas mais precisas, relevantes e úteis."
     },
     {
-      question: "Can I save and reuse my prompts?",
-      answer: "Yes! You can save your favorite prompts, view your generation history, and download prompts as text files for future use."
+      question: "Quais modelos de IA são suportados?",
+      answer: "Nosso gerador suporta os principais modelos de IA do mercado, incluindo ChatGPT (OpenAI), Claude (Anthropic), Gemini (Google), Perplexity, VO3 Google, Midjourney, DALL-E e Stable Diffusion. Cada modelo recebe um formato de prompt otimizado para suas capacidades específicas."
     },
     {
-      question: "Which AI models are supported?",
-      answer: "We support 8+ AI models including ChatGPT, Claude, Gemini, Perplexity, VO3 Google, Midjourney, DALL-E, and Stable Diffusion, with specialized templates for each."
+      question: "Como funcionam os templates?",
+      answer: "Os templates são estruturas pré-definidas para tarefas específicas, como criação de artigos, análise de código ou geração de imagens. Basta selecionar um template compatível com seu modelo de IA escolhido, preencher as variáveis solicitadas, e o sistema gerará um prompt profissional e otimizado automaticamente."
     },
     {
-      question: "Is the tool free to use?",
-      answer: "Yes, our basic prompt generator is completely free. We also offer premium features and exclusive access codes for advanced functionality."
+      question: "Posso personalizar os prompts gerados?",
+      answer: "Sim! Após a geração, você pode editar o prompt manualmente antes de usá-lo. Também oferecemos opções de personalização como tom, complexidade, idioma de saída e instruções adicionais para ajustar o prompt às suas necessidades específicas."
     },
     {
-      question: "How can I get better results?",
-      answer: "Be specific about your objectives, provide context, specify the desired tone and format, and use our built-in tips for crafting effective prompts."
+      question: "Os prompts funcionam em qualquer idioma?",
+      answer: "Nosso gerador pode criar prompts em português ou inglês. Recomendamos usar prompts em inglês para modelos internacionais como Midjourney e DALL-E para obter melhores resultados, mas para modelos de texto como ChatGPT e Claude, prompts em português funcionam perfeitamente."
+    },
+    {
+      question: "Como posso salvar meus prompts favoritos?",
+      answer: "Após gerar um prompt, você pode salvá-lo clicando no ícone de marcador. Seus prompts salvos ficarão disponíveis durante sua sessão atual. Também oferecemos opções para copiar para a área de transferência ou baixar como arquivo de texto."
+    },
+    {
+      question: "O gerador de prompts é gratuito?",
+      answer: "Sim, nosso gerador de prompts básico é completamente gratuito. Oferecemos recursos avançados e templates premium para usuários que desejam resultados ainda mais especializados."
     }
   ];
 
   return (
-    <section className="my-16">
-      <Card>
-        <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-bold flex items-center justify-center gap-2">
-            <HelpCircle className="h-8 w-8 text-primary" />
-            Frequently Asked Questions
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Accordion type="single" collapsible className="w-full">
-            {faqs.map((faq, index) => (
-              <AccordionItem key={index} value={`item-${index}`}>
-                <AccordionTrigger className="text-left">
-                  {faq.question}
-                </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground">
-                  {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </CardContent>
-      </Card>
+    <section className="py-16">
+      <div className="text-center mb-12">
+        <h2 className="text-3xl font-bold mb-4">Perguntas Frequentes</h2>
+        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          Tudo o que você precisa saber sobre nosso gerador de prompts
+        </p>
+      </div>
+      
+      <div className="max-w-3xl mx-auto">
+        <Accordion type="single" collapsible className="w-full">
+          {faqs.map((faq, index) => (
+            <AccordionItem key={index} value={`item-${index}`}>
+              <AccordionTrigger className="text-left text-lg font-medium">
+                {faq.question}
+              </AccordionTrigger>
+              <AccordionContent className="text-muted-foreground text-base">
+                {faq.answer}
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </div>
     </section>
   );
 };

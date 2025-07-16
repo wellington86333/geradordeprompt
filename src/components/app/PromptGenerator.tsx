@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import {
   Select,
   SelectContent,
@@ -12,8 +12,18 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Input } from '@/components/ui/input';
 import { useToast } from "@/hooks/use-toast";
-import { Copy, Mic, Share2, Bot, Lightbulb, Target, Palette, Drama, MessageSquare, ShieldOff, CheckCircle, Download, RefreshCw, History, Bookmark, PenSquare, Sparkles } from 'lucide-react';
+import { 
+  Copy, Share2, Bot, Lightbulb, Target, Palette, Drama, MessageSquare, 
+  ShieldOff, CheckCircle, Download, RefreshCw, History, Bookmark, 
+  PenSquare, Sparkles, Template, Settings, Wand2, AlertCircle,
+  TrendingUp, Clock, Star, Filter
+} from 'lucide-react';
+import { PromptGenerator as PromptGen, PromptGenerationOptions } from '@/lib/prompt-generator';
+import { promptTemplates, promptCategories, getTemplatesByCategory, PromptTemplate } from '@/lib/prompt-templates';
 
 const aiModels = [
   { value: 'chatgpt', label: 'ChatGPT (OpenAI)', description: 'Best for conversational AI and general tasks' },
@@ -27,21 +37,29 @@ const aiModels = [
 ];
 
 const promptTips = [
-    { icon: <Target className="h-5 w-5 text-primary" />, title: "Clear Objective", description: "What result do you expect?" },
-    { icon: <MessageSquare className="h-5 w-5 text-primary" />, title: "Context", description: "Provide background information." },
-    { icon: <Palette className="h-5 w-5 text-primary" />, title: "Style", description: "E.g.: formal, casual, technical." },
-    { icon: <Drama className="h-5 w-5 text-primary" />, title: "Tone", description: "E.g.: fun, serious, inspiring." },
-    { icon: <CheckCircle className="h-5 w-5 text-primary" />, title: "Format", description: "E.g.: list, paragraph, code." },
-    { icon: <ShieldOff className="h-5 w-5 text-primary" />, title: "What to Avoid", description: "Restrictions and negative keywords." },
+    { icon: <Target className="h-5 w-5 text-primary" />, title: "Objetivo Claro", description: "Qual resultado você espera?" },
+    { icon: <MessageSquare className="h-5 w-5 text-primary" />, title: "Contexto", description: "Forneça informações de fundo." },
+    { icon: <Palette className="h-5 w-5 text-primary" />, title: "Estilo", description: "Ex.: formal, casual, técnico." },
+    { icon: <Drama className="h-5 w-5 text-primary" />, title: "Tom", description: "Ex.: divertido, sério, inspirador." },
+    { icon: <CheckCircle className="h-5 w-5 text-primary" />, title: "Formato", description: "Ex.: lista, parágrafo, código." },
+    { icon: <ShieldOff className="h-5 w-5 text-primary" />, title: "O que Evitar", description: "Restrições e palavras negativas." },
 ];
 
 const PromptGenerator = () => {
+  const [activeTab, setActiveTab] = useState('basic');
   const [model, setModel] = useState('chatgpt');
   const [promptInput, setPromptInput] = useState('');
   const [generatedPrompt, setGeneratedPrompt] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [promptHistory, setPromptHistory] = useState<string[]>([]);
   const [savedPrompts, setSavedPrompts] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState('writing');
+  const [selectedTemplate, setSelectedTemplate] = useState<PromptTemplate | null>(null);
+  const [templateVariables, setTemplateVariables] = useState<Record<string, string>>({});
+  const [outputLanguage, setOutputLanguage] = useState<'pt' | 'en'>('pt');
+  const [tone, setTone] = useState('professional');
+  const [complexity, setComplexity] = useState<'simple' | 'intermediate' | 'advanced'>('intermediate');
+  const [customInstructions, setCustomInstructions] = useState('');
   const { toast } = useToast();
 
   const selectedModel = useMemo(() => 
@@ -49,179 +67,133 @@ const PromptGenerator = () => {
     [model]
   );
 
+  const availableTemplates = useMemo(() => 
+    getTemplatesByCategory(selectedCategory).filter(template => 
+      template.aiModels.includes(model)
+    ),
+    [selectedCategory, model]
+  );
+
+  // Reset template variables when template changes
+  useEffect(() => {
+    if (selectedTemplate) {
+      const initialVariables: Record<string, string> = {};
+      selectedTemplate.variables.forEach(variable => {
+        initialVariables[variable] = '';
+      });
+      setTemplateVariables(initialVariables);
+    } else {
+      setTemplateVariables({});
+    }
+  }, [selectedTemplate]);
+
+  // Auto-suggest model based on input
+  useEffect(() => {
+    if (promptInput.length > 20 && !isGenerating) {
+      const suggestedModel = PromptGen.getModelRecommendation(promptInput);
+      if (suggestedModel !== model) {
+        // Optionally show a suggestion toast
+        // toast({
+        //   title: "Modelo Sugerido",
+        //   description: `Baseado no seu prompt, ${aiModels.find(m => m.value === suggestedModel)?.label} pode ser uma boa opção.`,
+        // });
+      }
+    }
+  }, [promptInput, model, isGenerating]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setPromptInput(e.target.value);
   };
 
   const handleSelectChange = (value: string) => {
     setModel(value);
+    // Reset template if it's not compatible with the new model
+    if (selectedTemplate && !selectedTemplate.aiModels.includes(value)) {
+      setSelectedTemplate(null);
+    }
+  };
+
+  const handleTemplateSelect = (template: PromptTemplate | null) => {
+    setSelectedTemplate(template);
+  };
+
+  const handleVariableChange = (variable: string, value: string) => {
+    setTemplateVariables(prev => ({
+      ...prev,
+      [variable]: value
+    }));
   };
 
   const generatePrompt = () => {
-    if (!promptInput.trim()) {
-        toast({
-            title: "Required Field",
-            description: "Please fill in the description of your prompt.",
-            variant: "destructive",
-        });
-        return;
+    // Validate input
+    if (activeTab === 'basic' && !promptInput.trim()) {
+      toast({
+        title: "Campo Obrigatório",
+        description: "Por favor, descreva o que você precisa.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (activeTab === 'template' && selectedTemplate && 
+        selectedTemplate.variables.some(v => !templateVariables[v]?.trim())) {
+      toast({
+        title: "Campos Incompletos",
+        description: "Por favor, preencha todas as variáveis do template.",
+        variant: "destructive",
+      });
+      return;
     }
 
     setIsGenerating(true);
     
     // Simulate AI processing time
     setTimeout(() => {
-    // Enhanced prompt generation logic for different AI models
-    let promptTemplate = '';
-    
-    switch (model) {
-      case 'chatgpt':
-        promptTemplate = `You are an expert assistant. Please help me with the following task:
+      try {
+        // Use the PromptGenerator class to generate the prompt
+        const options: PromptGenerationOptions = {
+          aiModel: model,
+          userInput: promptInput,
+          outputLanguage,
+          tone,
+          complexity,
+          customInstructions
+        };
 
-**Task:** ${promptInput}
+        // If using a template
+        if (activeTab === 'template' && selectedTemplate) {
+          options.template = selectedTemplate;
+          options.variables = templateVariables;
+        }
 
-**Instructions:**
-- Provide a comprehensive and well-structured response
-- Use clear and professional language
-- Include examples when relevant
-- Ensure accuracy and helpfulness
-
-Please respond in English.`;
-        break;
+        const result = PromptGen.generatePrompt(options);
         
-      case 'claude':
-        promptTemplate = `I need your assistance with the following request. Please provide a thoughtful and detailed response:
-
-**Request:** ${promptInput}
-
-**Guidelines:**
-- Be thorough and analytical in your approach
-- Consider multiple perspectives when applicable
-- Provide clear reasoning for your recommendations
-- Structure your response logically
-
-Please respond in English.`;
-        break;
+        setGeneratedPrompt(result.content);
+        setPromptHistory(prev => [result.content, ...prev.slice(0, 9)]); // Keep last 10
         
-      case 'gemini':
-        promptTemplate = `Help me with this task using your multimodal capabilities:
-
-**Task:** ${promptInput}
-
-**Requirements:**
-- Provide a comprehensive solution
-- Use structured formatting when helpful
-- Include relevant details and context
-- Be precise and informative
-
-Please respond in English.`;
-        break;
-        
-      case 'perplexity':
-        promptTemplate = `Research and provide information about:
-
-**Query:** ${promptInput}
-
-**Please include:**
-- Accurate and up-to-date information
-- Relevant sources and references
-- Clear explanations
-- Comprehensive coverage of the topic
-
-Please respond in English.`;
-        break;
-        
-      case 'vo3_google':
-        promptTemplate = `Create a video concept for:
-
-**Video Description:** ${promptInput}
-
-**Video Requirements:**
-- Clear visual narrative
-- Engaging storytelling elements
-- Appropriate pacing and flow
-- Professional quality output
-
-Please respond in English with detailed video specifications.`;
-        break;
-        
-      case 'midjourney':
-        promptTemplate = `Create an image with the following specifications:
-
-**Image Description:** ${promptInput}
-
-**Style Parameters:**
-- High quality, detailed artwork
-- Professional composition
-- Appropriate lighting and colors
-- Creative and visually appealing
-
-**Technical Settings:** --ar 16:9 --v 6 --style raw
-
-Please respond in English.`;
-        break;
-        
-      case 'dall_e':
-        promptTemplate = `Generate an image based on this description:
-
-**Image Prompt:** ${promptInput}
-
-**Requirements:**
-- High resolution and quality
-- Creative interpretation
-- Visually striking composition
-- Professional artistic style
-
-Please respond in English.`;
-        break;
-        
-      case 'stable_diffusion':
-        promptTemplate = `Create an image using this prompt:
-
-**Prompt:** ${promptInput}
-
-**Parameters:**
-- High quality, masterpiece
-- Detailed and realistic
-- Professional composition
-- Optimal lighting and colors
-
-**Negative Prompt:** low quality, blurry, distorted, amateur
-
-Please respond in English.`;
-        break;
-        
-      default:
-        promptTemplate = `**AI Model:** ${selectedModel.label}
-
-**Task:** ${promptInput}
-
-**Instructions:**
-- Provide a high-quality response
-- Use professional language
-- Be comprehensive and helpful
-- Structure the response clearly
-
-Please respond in English.`;
-    }
-    
-    setGeneratedPrompt(promptTemplate);
-    setPromptHistory(prev => [promptTemplate, ...prev.slice(0, 9)]); // Keep last 10
-    setIsGenerating(false);
-    
-    toast({
-      title: "Prompt Generated!",
-      description: `Optimized prompt created for ${selectedModel.label}`,
-    });
-    }, 1500); // 1.5 second delay for better UX
+        toast({
+          title: "Prompt Gerado!",
+          description: `Prompt otimizado criado para ${selectedModel.label}`,
+        });
+      } catch (error) {
+        console.error("Erro ao gerar prompt:", error);
+        toast({
+          title: "Erro",
+          description: "Ocorreu um erro ao gerar o prompt. Tente novamente.",
+          variant: "destructive",
+        });
+      } finally {
+        setIsGenerating(false);
+      }
+    }, 1000);
   };
   
   const copyToClipboard = () => {
     if (generatedPrompt) {
       navigator.clipboard.writeText(generatedPrompt);
       toast({
-        title: "Copied!",
-        description: "The prompt has been copied to clipboard.",
+        title: "Copiado!",
+        description: "O prompt foi copiado para a área de transferência.",
       });
     }
   };
@@ -230,8 +202,8 @@ Please respond in English.`;
     if (generatedPrompt && !savedPrompts.includes(generatedPrompt)) {
       setSavedPrompts(prev => [generatedPrompt, ...prev]);
       toast({
-        title: "Prompt Saved!",
-        description: "Added to your saved prompts collection.",
+        title: "Prompt Salvo!",
+        description: "Adicionado à sua coleção de prompts salvos.",
       });
     }
   };
@@ -239,9 +211,14 @@ Please respond in English.`;
   const clearAll = () => {
     setPromptInput('');
     setGeneratedPrompt('');
+    setCustomInstructions('');
+    if (activeTab === 'template') {
+      setSelectedTemplate(null);
+      setTemplateVariables({});
+    }
     toast({
-      title: "Cleared!",
-      description: "All fields have been reset.",
+      title: "Limpo!",
+      description: "Todos os campos foram redefinidos.",
     });
   };
 
@@ -256,8 +233,22 @@ Please respond in English.`;
       document.body.removeChild(element);
       
       toast({
-        title: "Downloaded!",
-        description: "Prompt saved as text file.",
+        title: "Baixado!",
+        description: "Prompt salvo como arquivo de texto.",
+      });
+    }
+  };
+  
+  // Função para recomendar um modelo com base no input
+  const recommendModel = () => {
+    if (promptInput.length < 20) return;
+    
+    const suggestedModel = PromptGen.getModelRecommendation(promptInput);
+    if (suggestedModel !== model) {
+      setModel(suggestedModel);
+      toast({
+        title: "Modelo Recomendado",
+        description: `Baseado no seu prompt, alteramos para ${aiModels.find(m => m.value === suggestedModel)?.label}`,
       });
     }
   };
@@ -268,10 +259,10 @@ Please respond in English.`;
       <CardHeader className="text-center">
         <CardTitle className="text-3xl font-bold flex items-center justify-center gap-2">
           <Sparkles className="h-8 w-8 text-primary" />
-          Advanced Prompt Generator
+          Gerador Avançado de Prompts
         </CardTitle>
         <CardDescription className="text-muted-foreground">
-          Select an AI model and describe what you need to create optimized prompts in English.
+          Selecione um modelo de IA e descreva o que você precisa para criar prompts otimizados.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-8 p-6">
@@ -279,12 +270,12 @@ Please respond in English.`;
             <div className="space-y-2">
                 <Label htmlFor="model" className="flex items-center text-md font-semibold mb-2">
                     <Bot className="mr-2 h-5 w-5 text-primary" />
-                    AI Model
+                    Modelo de IA
                 </Label>
                 <Card className="p-2">
                     <Select value={model} onValueChange={handleSelectChange}>
                         <SelectTrigger className="w-full border-0">
-                        <SelectValue placeholder="Select AI Model..." />
+                        <SelectValue placeholder="Selecione o modelo..." />
                         </SelectTrigger>
                         <SelectContent>
                         {aiModels.map((m) => (
@@ -299,27 +290,147 @@ Please respond in English.`;
                     </Select>
                 </Card>
                 <div className="text-xs text-muted-foreground p-2 bg-secondary/30 rounded">
-                  <strong>Selected:</strong> {selectedModel.description}
+                  <strong>Selecionado:</strong> {selectedModel.description}
                 </div>
             </div>
             
-            <div className="md:col-span-2 space-y-2">
-                <Label htmlFor="promptInput" className="flex items-center text-md font-semibold mb-2">
-                <PenSquare className="mr-2 h-5 w-5 text-primary" />
-                Describe Your Idea
-                </Label>
-                <Textarea 
-                id="promptInput" 
-                placeholder="E.g.: Create a social media post about AI with a fun tone, for a tech podcast about cats..." 
-                value={promptInput} 
-                onChange={handleInputChange}
-                className="min-h-[120px] text-base"
-                />
+            <div className="md:col-span-2">
+                <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                    <TabsList className="grid grid-cols-2 mb-4">
+                        <TabsTrigger value="basic" className="flex items-center gap-2">
+                            <PenSquare className="h-4 w-4" />
+                            Modo Básico
+                        </TabsTrigger>
+                        <TabsTrigger value="template" className="flex items-center gap-2">
+                            <Template className="h-4 w-4" />
+                            Templates
+                        </TabsTrigger>
+                    </TabsList>
+                    
+                    <TabsContent value="basic" className="space-y-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="promptInput" className="flex items-center text-md font-semibold mb-2">
+                                <PenSquare className="mr-2 h-5 w-5 text-primary" />
+                                Descreva sua ideia
+                            </Label>
+                            <Textarea 
+                                id="promptInput" 
+                                placeholder="Ex.: Crie um post para redes sociais sobre IA com tom divertido, para um podcast de tecnologia..." 
+                                value={promptInput} 
+                                onChange={handleInputChange}
+                                className="min-h-[120px] text-base"
+                            />
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <Label className="text-sm font-medium">Tom</Label>
+                                <Select value={tone} onValueChange={setTone}>
+                                    <SelectTrigger className="w-full mt-1">
+                                        <SelectValue placeholder="Selecione o tom" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="professional">Profissional</SelectItem>
+                                        <SelectItem value="casual">Casual</SelectItem>
+                                        <SelectItem value="friendly">Amigável</SelectItem>
+                                        <SelectItem value="humorous">Humorístico</SelectItem>
+                                        <SelectItem value="formal">Formal</SelectItem>
+                                        <SelectItem value="technical">Técnico</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                            
+                            <div>
+                                <Label className="text-sm font-medium">Complexidade</Label>
+                                <Select value={complexity} onValueChange={(value: any) => setComplexity(value)}>
+                                    <SelectTrigger className="w-full mt-1">
+                                        <SelectValue placeholder="Selecione a complexidade" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="simple">Simples</SelectItem>
+                                        <SelectItem value="intermediate">Intermediária</SelectItem>
+                                        <SelectItem value="advanced">Avançada</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
+                    </TabsContent>
+                    
+                    <TabsContent value="template" className="space-y-4">
+                        <div className="flex flex-wrap gap-2 mb-4">
+                            {promptCategories.map(category => (
+                                <Badge 
+                                    key={category.id}
+                                    variant={selectedCategory === category.id ? "default" : "outline"}
+                                    className="cursor-pointer text-sm py-1 px-3"
+                                    onClick={() => setSelectedCategory(category.id)}
+                                >
+                                    {category.icon} {category.name}
+                                </Badge>
+                            ))}
+                        </div>
+                        
+                        <div className="grid grid-cols-1 gap-3 max-h-[300px] overflow-y-auto pr-2">
+                            {availableTemplates.length > 0 ? (
+                                availableTemplates.map(template => (
+                                    <Card 
+                                        key={template.id}
+                                        className={`p-3 cursor-pointer transition-all ${selectedTemplate?.id === template.id ? 'border-primary/50 bg-primary/5' : 'hover:bg-secondary/20'}`}
+                                        onClick={() => handleTemplateSelect(template)}
+                                    >
+                                        <div className="flex justify-between items-start">
+                                            <div>
+                                                <h4 className="font-medium">{template.name}</h4>
+                                                <p className="text-sm text-muted-foreground">{template.description}</p>
+                                            </div>
+                                            <Badge variant="outline" className="text-xs">
+                                                {template.aiModels.includes(model) ? 
+                                                    <CheckCircle className="h-3 w-3 mr-1 text-green-500" /> : 
+                                                    <AlertCircle className="h-3 w-3 mr-1 text-amber-500" />
+                                                }
+                                                {model}
+                                            </Badge>
+                                        </div>
+                                    </Card>
+                                ))
+                            ) : (
+                                <div className="text-center p-4 text-muted-foreground">
+                                    Nenhum template disponível para esta categoria e modelo.
+                                </div>
+                            )}
+                        </div>
+                        
+                        {selectedTemplate && (
+                            <div className="mt-4 space-y-3 border border-primary/20 rounded-lg p-4 bg-primary/5">
+                                <h3 className="font-medium flex items-center gap-2">
+                                    <Template className="h-4 w-4" />
+                                    {selectedTemplate.name}
+                                </h3>
+                                
+                                <div className="space-y-3">
+                                    {selectedTemplate.variables.map(variable => (
+                                        <div key={variable} className="space-y-1">
+                                            <Label htmlFor={variable} className="text-sm capitalize">
+                                                {variable.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
+                                            </Label>
+                                            <Input
+                                                id={variable}
+                                                value={templateVariables[variable] || ''}
+                                                onChange={(e) => handleVariableChange(variable, e.target.value)}
+                                                placeholder={`Digite ${variable.replace(/([A-Z])/g, ' $1').toLowerCase()}`}
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </TabsContent>
+                </Tabs>
             </div>
         </div>
 
         <div className="p-4 bg-secondary/30 rounded-lg">
-            <h3 className="font-semibold mb-4 flex items-center"><Lightbulb className="mr-2 text-yellow-400"/>Tips for Perfect Prompts</h3>
+            <h3 className="font-semibold mb-4 flex items-center"><Lightbulb className="mr-2 text-yellow-400"/>Dicas para Prompts Perfeitos</h3>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
                 {promptTips.map((tip, index) => (
                     <div key={index} className="flex items-start gap-2">
@@ -333,6 +444,73 @@ Please respond in English.`;
             </div>
         </div>
         
+        <div className="border border-dashed border-primary/30 rounded-lg p-4">
+            <details className="group">
+                <summary className="flex items-center justify-between cursor-pointer list-none">
+                    <div className="flex items-center gap-2 font-medium">
+                        <Settings className="h-5 w-5 text-primary" />
+                        Configurações Avançadas
+                    </div>
+                    <div className="text-sm text-muted-foreground group-open:rotate-180 transition-transform">▼</div>
+                </summary>
+                <div className="mt-4 space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <Label className="text-sm font-medium">Idioma de Saída</Label>
+                            <Select value={outputLanguage} onValueChange={(value: any) => setOutputLanguage(value)}>
+                                <SelectTrigger className="w-full mt-1">
+                                    <SelectValue placeholder="Selecione o idioma" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="pt">Português</SelectItem>
+                                    <SelectItem value="en">Inglês</SelectItem>
+                                </SelectContent>
+                            </Select>
+                            <p className="text-xs text-muted-foreground mt-1">
+                                Idioma em que o prompt será gerado
+                            </p>
+                        </div>
+                        
+                        <div>
+                            <Label htmlFor="customInstructions" className="text-sm font-medium">Instruções Personalizadas</Label>
+                            <Textarea
+                                id="customInstructions"
+                                value={customInstructions}
+                                onChange={(e) => setCustomInstructions(e.target.value)}
+                                placeholder="Adicione instruções específicas para o modelo de IA..."
+                                className="mt-1 h-24"
+                            />
+                        </div>
+                    </div>
+                    
+                    <div className="bg-primary/5 p-3 rounded-lg">
+                        <h4 className="text-sm font-medium flex items-center gap-2 mb-2">
+                            <TrendingUp className="h-4 w-4 text-primary" />
+                            Estatísticas do Prompt
+                        </h4>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+                            <div className="bg-background p-2 rounded">
+                                <p className="text-muted-foreground">Modelo</p>
+                                <p className="font-medium">{selectedModel.label}</p>
+                            </div>
+                            <div className="bg-background p-2 rounded">
+                                <p className="text-muted-foreground">Tokens (est.)</p>
+                                <p className="font-medium">{Math.ceil((promptInput.length + (customInstructions?.length || 0)) / 4)}</p>
+                            </div>
+                            <div className="bg-background p-2 rounded">
+                                <p className="text-muted-foreground">Modo</p>
+                                <p className="font-medium">{activeTab === 'basic' ? 'Básico' : 'Template'}</p>
+                            </div>
+                            <div className="bg-background p-2 rounded">
+                                <p className="text-muted-foreground">Complexidade</p>
+                                <p className="font-medium capitalize">{complexity}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </details>
+        </div>
+        
         <div className="flex flex-col sm:flex-row gap-4">
             <Button 
               onClick={generatePrompt} 
@@ -343,12 +521,12 @@ Please respond in English.`;
                 {isGenerating ? (
                   <>
                     <RefreshCw className="mr-2 animate-spin"/>
-                    Generating...
+                    Gerando...
                   </>
                 ) : (
                   <>
                 <Bot className="mr-2"/>
-                Generate Optimized Prompt
+                Gerar Prompt Otimizado
                   </>
                 )}
             </Button>
@@ -359,18 +537,18 @@ Please respond in English.`;
                className="transition-transform duration-300 hover:scale-105"
              >
                 <RefreshCw className="mr-2"/>
-                Clear All
+                Limpar Tudo
             </Button>
         </div>
 
         <div className="space-y-2">
-            <Label className="text-lg font-semibold mb-2 block">Generated Prompt (English)</Label>
+            <Label className="text-lg font-semibold mb-2 block">Prompt Gerado</Label>
             <div className="relative">
                 <Textarea
                     readOnly
                     value={generatedPrompt}
                     className="h-full min-h-[250px] text-base bg-secondary/30 font-mono"
-                    placeholder="Your optimized prompt in English will appear here..."
+                    placeholder="Seu prompt otimizado aparecerá aqui..."
                 />
                  <div className="absolute top-2 right-2 flex gap-1">
                     <Button 
@@ -378,7 +556,7 @@ Please respond in English.`;
                       size="icon" 
                       onClick={copyToClipboard} 
                       disabled={!generatedPrompt}
-                      title="Copy to Clipboard"
+                      title="Copiar para Área de Transferência"
                     >
                         <Copy className="h-5 w-5"/>
                     </Button>
@@ -387,7 +565,7 @@ Please respond in English.`;
                       size="icon" 
                       onClick={savePrompt}
                       disabled={!generatedPrompt}
-                      title="Save Prompt"
+                      title="Salvar Prompt"
                     >
                         <Bookmark className="h-5 w-5" />
                     </Button>
@@ -396,7 +574,7 @@ Please respond in English.`;
                        size="icon" 
                        onClick={downloadPrompt}
                        disabled={!generatedPrompt}
-                       title="Download as TXT"
+                       title="Baixar como TXT"
                      >
                         <Download className="h-5 w-5" />
                     </Button>
@@ -406,7 +584,7 @@ Please respond in English.`;
                       onClick={() => {
                         if (navigator.share && generatedPrompt) {
                           navigator.share({
-                            title: 'AI Prompt',
+                            title: 'Prompt IA',
                             text: generatedPrompt,
                           });
                         } else {
@@ -414,7 +592,7 @@ Please respond in English.`;
                         }
                       }}
                       disabled={!generatedPrompt}
-                      title="Share Prompt"
+                      title="Compartilhar Prompt"
                     >
                         <Share2 className="h-5 w-5" />
                     </Button>
@@ -427,7 +605,7 @@ Please respond in English.`;
           <div className="space-y-2">
             <Label className="text-lg font-semibold mb-2 block flex items-center">
               <History className="mr-2 h-5 w-5 text-primary" />
-              Recent Prompts
+              Prompts Recentes
             </Label>
             <div className="max-h-40 overflow-y-auto space-y-2">
               {promptHistory.map((prompt, index) => (
@@ -448,7 +626,7 @@ Please respond in English.`;
           <div className="space-y-2">
             <Label className="text-lg font-semibold mb-2 block flex items-center">
               <Bookmark className="mr-2 h-5 w-5 text-primary" />
-              Saved Prompts ({savedPrompts.length})
+              Prompts Salvos ({savedPrompts.length})
             </Label>
             <div className="max-h-40 overflow-y-auto space-y-2">
               {savedPrompts.map((prompt, index) => (

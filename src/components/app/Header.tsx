@@ -6,21 +6,21 @@ const Header = () => {
     <header className="text-center my-10 md:my-12">
       <div className="mb-6">
         <span className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">
-          🚀 New: Enhanced AI Prompt Generator with 8+ Models
+          🚀 Novo: Gerador Avançado de Prompts com 8+ Modelos de IA
         </span>
       </div>
       <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-4 gradient-text max-w-4xl mx-auto">
-        Professional AI Prompt Generator
+        Gerador Profissional de Prompts para IA
       </h1>
       <p className="max-w-3xl mx-auto text-lg md:text-xl text-muted-foreground">
-        Create perfect prompts for AI models like ChatGPT, Claude, Gemini, and VO3 Google.
-        Refine your ideas and get incredible results in text, code, images, or video.
+        Crie prompts perfeitos para modelos de IA como ChatGPT, Claude, Gemini e Midjourney.
+        Refine suas ideias e obtenha resultados incríveis em texto, código, imagens ou vídeo.
       </p>
       <div className="mt-6 flex flex-wrap justify-center gap-2 text-sm text-muted-foreground">
-        <span className="px-3 py-1 bg-secondary/50 rounded-full">✨ English Output</span>
-        <span className="px-3 py-1 bg-secondary/50 rounded-full">🤖 8+ AI Models</span>
-        <span className="px-3 py-1 bg-secondary/50 rounded-full">💾 Save & History</span>
-        <span className="px-3 py-1 bg-secondary/50 rounded-full">📱 Mobile Friendly</span>
+        <span className="px-3 py-1 bg-secondary/50 rounded-full">✨ Português e Inglês</span>
+        <span className="px-3 py-1 bg-secondary/50 rounded-full">🤖 8+ Modelos de IA</span>
+        <span className="px-3 py-1 bg-secondary/50 rounded-full">💾 Salvamento e Histórico</span>
+        <span className="px-3 py-1 bg-secondary/50 rounded-full">📱 Responsivo</span>
       </div>
     </header>
   );

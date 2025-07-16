@@ -1,36 +1,64 @@
 'use client';
-import type React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLockOpen, faClock } from '@fortawesome/free-solid-svg-icons';
 
-type CTASectionProps = {
-  title: string;
-  description: string;
-  buttonText: string;
-  link: string;
-};
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Sparkles, ArrowRight, Star } from 'lucide-react';
 
-const CTASection: React.FC<CTASectionProps> = ({ title, description, buttonText, link }) => {
+const CTASection = () => {
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
   return (
-    <section className="text-center p-10 bg-gradient-to-r from-[hsl(var(--primary-hsl),0.2)] to-[hsl(var(--secondary-hsl),0.2)] rounded-2xl my-10 border border-border relative overflow-hidden">
-        <div className="absolute top-[-50%] left-[-50%] w-[200%] h-[200%] bg-[radial-gradient(circle,hsl(var(--accent-hsl),0.1)_0%,transparent_70%)] z-0 animate-[rotate_20s_linear_infinite]"></div>
-        <div className="relative z-10">
-            <h2 className="text-3xl md:text-4xl font-bold mb-5">{title}</h2>
-            <p className="max-w-2xl mx-auto mb-8 text-muted-foreground text-lg">{description}</p>
-            <a 
-                href={link} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="inline-flex items-center text-white text-lg font-semibold px-12 py-4 rounded-full transition-all duration-300 shadow-[0_5px_20px_hsl(var(--secondary-hsl),0.4)] hover:transform hover:-translate-y-1 hover:shadow-[0_8px_25px_hsl(var(--secondary-hsl),0.6)] animated-gradient-bg"
-            >
-                <FontAwesomeIcon icon={faLockOpen} className="mr-3" />
-                {buttonText}
-            </a>
-            <div className="inline-block bg-black/40 px-5 py-2 rounded-full mt-5 font-medium border border-accent animate-pulse-custom">
-                <FontAwesomeIcon icon={faClock} className="mr-2" />
-                OFERTA POR TEMPO LIMITADO
+    <section className="py-16">
+      <Card className="w-full max-w-4xl mx-auto overflow-hidden bg-gradient-to-br from-primary/10 via-background to-secondary/10 border-primary/20 shadow-xl">
+        <div className="p-8 md:p-12 text-center">
+          <div className="flex justify-center mb-6">
+            <div className="h-16 w-16 rounded-full bg-primary/20 flex items-center justify-center">
+              <Sparkles className="h-8 w-8 text-primary" />
             </div>
+          </div>
+          
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Transforme suas ideias em prompts perfeitos
+          </h2>
+          
+          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+            Experimente agora nosso gerador avançado e obtenha resultados superiores com qualquer modelo de IA
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button 
+              onClick={scrollToTop}
+              size="lg" 
+              className="animated-gradient-bg text-white font-bold transition-transform duration-300 hover:scale-105"
+            >
+              Criar Prompt Agora
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+            
+            <Button 
+              variant="outline" 
+              size="lg"
+              className="border-primary/30 hover:border-primary/60"
+            >
+              <Star className="mr-2 h-5 w-5 text-yellow-500" />
+              Ver Exemplos
+            </Button>
+          </div>
+          
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <div className="px-4 py-2 bg-secondary/30 rounded-full text-sm">✨ 8+ Modelos de IA</div>
+            <div className="px-4 py-2 bg-secondary/30 rounded-full text-sm">🧠 Templates Inteligentes</div>
+            <div className="px-4 py-2 bg-secondary/30 rounded-full text-sm">🔄 Histórico e Salvamento</div>
+            <div className="px-4 py-2 bg-secondary/30 rounded-full text-sm">🌐 Português e Inglês</div>
+          </div>
         </div>
+      </Card>
     </section>
   );
 };
