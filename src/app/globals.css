@@ -119,6 +119,42 @@
   }
 }
 
+@keyframes paw-movement1 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+@keyframes paw-movement2 {
+  0%, 100% { transform: translateY(-2px); }
+  50% { transform: translateY(0); }
+}
+
+.animate-paw1 {
+  animation: paw-movement1 0.3s infinite;
+}
+
+.animate-paw2 {
+  animation: paw-movement2 0.3s infinite;
+}
+
+@keyframes paw-movement1 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+@keyframes paw-movement2 {
+  0%, 100% { transform: translateY(-2px); }
+  50% { transform: translateY(0); }
+}
+
+.animate-paw1 {
+  animation: paw-movement1 0.3s infinite;
+}
+
+.animate-paw2 {
+  animation: paw-movement2 0.3s infinite;
+}
+
 
 /* Lovart Section Styles */
 .lovart-section {
