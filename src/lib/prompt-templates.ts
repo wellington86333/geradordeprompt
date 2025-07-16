@@ -266,21 +266,21 @@ Responda em português brasileiro com dados realistas e específicos.`,
 - Cores dominantes: {colors}
 
 **Detalhes técnicos:**
-- Qualidade: Ultra high quality, 8K resolution, masterpiece
+- Qualidade: Ultra alta qualidade, resolução 8K, obra-prima
 - Composição: {composition}
 - Iluminação: {lighting}
 - Perspectiva: {perspective}
 
 **Estilo artístico:**
-{style === 'fotográfico' ? '- Photorealistic, professional photography\n- Sharp focus, detailed textures\n- Professional lighting setup' : ''}
-{style === 'ilustração' ? '- Digital illustration, concept art\n- Clean lines, vibrant colors\n- Artistic interpretation' : ''}
-{style === 'pintura' ? '- Oil painting style, artistic brushstrokes\n- Rich textures, classical composition\n- Fine art quality' : ''}
+{style === 'fotográfico' ? '- Fotorrealista, fotografia profissional\n- Foco nítido, texturas detalhadas\n- Iluminação profissional' : ''}
+{style === 'ilustração' ? '- Ilustração digital, arte conceitual\n- Linhas limpas, cores vibrantes\n- Interpretação artística' : ''}
+{style === 'pintura' ? '- Estilo de pintura a óleo, pinceladas artísticas\n- Texturas ricas, composição clássica\n- Qualidade de belas artes' : ''}
 
 **Prompt otimizado:**
-"{subject}, {style} style, {mood} atmosphere, {colors} color palette, {composition} composition, {lighting} lighting, {perspective} perspective, ultra high quality, 8K resolution, masterpiece, detailed, professional"
+"{subject}, estilo {style}, atmosfera {mood}, paleta de cores {colors}, composição {composition}, iluminação {lighting}, perspectiva {perspective}, ultra alta qualidade, resolução 8K, obra-prima, detalhado, profissional"
 
-**Negative prompt:**
-"low quality, blurry, distorted, amateur, pixelated, noise, artifacts, watermark, text, signature, cropped, out of frame"
+**Prompt negativo:**
+"baixa qualidade, desfocado, distorcido, amador, pixelado, ruído, artefatos, marca d'água, texto, assinatura, recortado, fora do quadro"
 
 **Configurações recomendadas:**
 - Aspect Ratio: {aspectRatio}

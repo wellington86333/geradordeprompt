@@ -70,15 +70,15 @@ export class PromptGenerator {
       name: 'DALL-E (OpenAI)',
       maxTokens: 1024,
       strengths: ['realismo', 'conceitos abstratos', 'precisão'],
-      prefix: 'Create a high-quality image of',
-      suffix: ', professional photography, detailed, 8K resolution'
+      prefix: 'Crie uma imagem de alta qualidade de',
+      suffix: ', fotografia profissional, detalhada, resolução 8K'
     },
     stable_diffusion: {
       name: 'Stable Diffusion',
       maxTokens: 1024,
       strengths: ['customização', 'estilos variados', 'controle fino'],
       prefix: '',
-      suffix: ', masterpiece, best quality, ultra detailed, 8k'
+      suffix: ', obra-prima, melhor qualidade, ultra detalhado, 8k'
     }
   };
 
