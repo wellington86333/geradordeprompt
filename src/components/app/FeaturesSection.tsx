@@ -3,7 +3,7 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { 
-  Bot, Sparkles, Template, Palette, Lightbulb, 
+  Bot, Sparkles, Layout, Palette, Lightbulb, 
   Languages, History, Download, Share2, Settings
 } from 'lucide-react';
 
@@ -35,7 +35,7 @@ const FeaturesSection = () => {
       description: "Suporte para 8+ modelos de IA incluindo ChatGPT, Claude, Gemini, Midjourney e mais."
     },
     {
-      icon: <Template className="h-6 w-6 text-primary" />,
+      icon: <Layout className="h-6 w-6 text-primary" />,
       title: "Templates Prontos",
       description: "Biblioteca de templates organizados por categoria para diferentes tipos de conteúdo."
     },

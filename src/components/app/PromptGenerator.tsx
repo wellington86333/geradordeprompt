@@ -19,7 +19,7 @@ import { useToast } from "@/hooks/use-toast";
 import { 
   Copy, Share2, Bot, Lightbulb, Target, Palette, Drama, MessageSquare, 
   ShieldOff, CheckCircle, Download, RefreshCw, History, Bookmark, 
-  PenSquare, Sparkles, Template, Settings, Wand2, AlertCircle,
+  PenSquare, Sparkles, Layout, Settings, Wand2, AlertCircle,
   TrendingUp, Clock, Star, Filter
 } from 'lucide-react';
 import { PromptGenerator as PromptGen, PromptGenerationOptions } from '@/lib/prompt-generator';
@@ -302,7 +302,7 @@ const PromptGenerator = () => {
                             Modo Básico
                         </TabsTrigger>
                         <TabsTrigger value="template" className="flex items-center gap-2">
-                            <Template className="h-4 w-4" />
+                            <Layout className="h-4 w-4" />
                             Templates
                         </TabsTrigger>
                     </TabsList>
@@ -403,7 +403,7 @@ const PromptGenerator = () => {
                         {selectedTemplate && (
                             <div className="mt-4 space-y-3 border border-primary/20 rounded-lg p-4 bg-primary/5">
                                 <h3 className="font-medium flex items-center gap-2">
-                                    <Template className="h-4 w-4" />
+                                    <Layout className="h-4 w-4" />
                                     {selectedTemplate.name}
                                 </h3>
                                 
